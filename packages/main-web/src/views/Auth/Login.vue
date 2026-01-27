@@ -69,7 +69,7 @@
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, FormInstance, FormRules } from 'element-plus'
-import { User, Brush, Shop, Setting, UserFilled } from '@element-plus/icons-vue'
+import { User, Brush, Shop, UserFilled } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRoleStore } from '@/stores/role'
 import { useI18n } from 'vue-i18n'
@@ -88,7 +88,6 @@ const roleOptions = [
   { value: 'user', icon: User },
   { value: 'designer', icon: Brush },
   { value: 'supplier', icon: Shop },
-  { value: 'contractor', icon: Setting },
   { value: 'guest', icon: UserFilled }
 ]
 
@@ -96,7 +95,7 @@ const roleOptions = [
 const loginForm = reactive({
   username: '',
   password: '',
-  role: 'user' as 'designer' | 'supplier' | 'contractor' | 'user' | 'guest'
+  role: 'user' as 'designer' | 'supplier' | 'user' | 'guest'
 })
 
 // 初始化角色状态
@@ -142,7 +141,6 @@ const handleLogin = async () => {
     const roleRouteMap = {
       designer: '/designer',
       supplier: '/supplier',
-      contractor: '/contractor',
       user: '/user',
       guest: '/guest'
     }
@@ -194,7 +192,7 @@ const handleLogin = async () => {
 
 .role-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin-bottom: 30px;
 }

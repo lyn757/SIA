@@ -22,10 +22,10 @@ const i18nPlugin = createI18nPlugin({
         payload: { locale }
       })
     }
-    
+
     // 设置HTML属性
     document.documentElement.lang = locale
-    
+
     // 触发全局事件
     window.dispatchEvent(new CustomEvent('app-language-changed', {
       detail: { locale }
@@ -50,15 +50,21 @@ const initApp = async () => {
 
   // 初始化认证状态和动态路由
   const authStore = useAuthStore()
-  await authStore.initializeAuth()
+  const isAuthenticated = await authStore.initializeAuth()
+
+  console.log('认证状态初始化完成:', {
+    isAuthenticated,
+    userInfo: authStore.userInfo,
+    lastActiveRole: authStore.lastActiveRole
+  })
 
   // 初始化默认语言
   const savedLocale = localStorage.getItem('locale') || 'zh'
   await i18nPlugin.switchLocale(savedLocale)
-  
+
   // 挂载应用
   app.mount('#app')
-  
+
   console.log('🚀 App initialized with i18n plugin and auth')
 }
 

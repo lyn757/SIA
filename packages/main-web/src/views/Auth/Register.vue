@@ -7,219 +7,127 @@
     <div class="register-card">
       <div class="register-header">
         <h1>{{ $t('register.createAccount') }}</h1>
-        <p>{{ $t('register.joinPlatform') }}</p>
+        <button class="close-btn" @click="$router.push('/login')">×</button>
       </div>
       
-      <!-- 角色选择 -->
+      <p class="register-subtitle">{{ $t('register.joinPlatform') }}</p>
+      
+      <!-- 角色选择 - 简化版 -->
       <div class="role-grid">
         <div v-for="role in roleOptions" :key="role.value" 
              :class="['role-card', { active: registerForm.role === role.value }]"
              @click="registerForm.role = role.value">
-          <div class="role-icon">
-            <component :is="role.icon" />
+          <div class="role-icon-wrapper">
+            <component :is="role.icon" class="role-icon-svg" />
           </div>
           <div class="role-name">{{ $t(`roles.${role.value}`) }}</div>
           <div class="role-desc">{{ $t(`roles.${role.value}Desc`) }}</div>
         </div>
       </div>
 
-      <!-- 注册表单 -->
-      <el-form ref="registerFormRef" :model="registerForm" :rules="registerRules" label-position="top">
-        <!-- 基础信息 - 所有角色都有 -->
-        <el-form-item :label="$t('register.email')" prop="email">
-          <el-input v-model="registerForm.email" :placeholder="$t('register.emailPlaceholder')" size="large" />
-        </el-form-item>
-        
-        <el-form-item :label="$t('register.password')" prop="password">
-          <el-input v-model="registerForm.password" type="password" :placeholder="$t('register.passwordPlaceholder')" size="large" show-password />
-        </el-form-item>
-        
-        <el-form-item :label="$t('register.confirmPassword')" prop="confirmPassword">
-          <el-input v-model="registerForm.confirmPassword" type="password" :placeholder="$t('register.confirmPasswordPlaceholder')" size="large" show-password />
-        </el-form-item>
+      <!-- 注册表单 - 简化版 -->
+      <el-form ref="registerFormRef" :model="registerForm" :rules="registerRules" class="register-form">
+        <!-- 基础信息 - 两列布局 -->
+        <div class="form-row">
+          <el-form-item prop="email" class="form-item-half required-field">
+            <el-input 
+              v-model="registerForm.email" 
+              :placeholder="$t('register.email')" 
+              size="large"
+            />
+          </el-form-item>
+          
+          <el-form-item prop="password" class="form-item-half required-field">
+            <el-input 
+              v-model="registerForm.password" 
+              type="password" 
+              :placeholder="$t('register.password')" 
+              size="large" 
+              show-password 
+            />
+          </el-form-item>
+        </div>
 
-        <el-form-item :label="$t('register.emailCode')" prop="emailCode">
-          <div class="code-wrapper">
-            <el-input v-model="registerForm.emailCode" :placeholder="$t('register.emailCodePlaceholder')" size="large" class="code-input" />
-            <el-button type="primary" :disabled="emailCodeDisabled" @click="sendEmailCode" class="code-btn">
-              {{ emailCodeText }}
-            </el-button>
-          </div>
-        </el-form-item>
+        <div class="form-row">
+          <el-form-item prop="emailCode" class="form-item-half required-field">
+            <div class="code-wrapper">
+              <el-input 
+                v-model="registerForm.emailCode" 
+                :placeholder="$t('register.emailCode')" 
+                size="large"
+              />
+              <el-button 
+                type="text" 
+                :disabled="emailCodeDisabled" 
+                @click="sendEmailCode" 
+                class="code-link"
+              >
+                {{ emailCodeText }}
+              </el-button>
+            </div>
+          </el-form-item>
 
-        <el-form-item :label="$t('register.phone')" prop="phone">
-          <el-input v-model="registerForm.phone" :placeholder="$t('register.phonePlaceholder')" size="large" />
+          <el-form-item prop="confirmPassword" class="form-item-half required-field">
+            <el-input 
+              v-model="registerForm.confirmPassword" 
+              type="password" 
+              :placeholder="$t('register.confirmPassword')" 
+              size="large" 
+              show-password 
+            />
+          </el-form-item>
+        </div>
+
+        <el-form-item prop="phone">
+          <el-input 
+            v-model="registerForm.phone" 
+            :placeholder="$t('register.phone')" 
+            size="large"
+          />
         </el-form-item>
 
         <!-- 设计师专属表单 -->
-        <div v-if="registerForm.role === 'designer'" class="role-specific-form designer-form">
-          <div class="form-section-title">{{ $t('register.designerInfo') }}</div>
+        <div v-if="registerForm.role === 'designer'" class="designer-specific-section">
+          <div class="section-title">{{ $t('register.designerNature') }}</div>
           
-          <el-form-item :label="$t('register.designerType')" prop="designerType">
-            <el-radio-group v-model="registerForm.designerType">
+          <el-form-item prop="designerType">
+            <el-radio-group v-model="registerForm.designerType" size="large">
               <el-radio label="individual">{{ $t('register.individual') }}</el-radio>
               <el-radio label="studio">{{ $t('register.studio') }}</el-radio>
               <el-radio label="company">{{ $t('register.company') }}</el-radio>
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item :label="$t('register.designerName')" prop="designerName">
-            <el-input v-model="registerForm.designerName" :placeholder="$t('register.designerNamePlaceholder')" size="large" />
+          <el-form-item prop="designerName" class="required-field">
+            <el-input 
+              v-model="registerForm.designerName" 
+              :placeholder="$t('register.designerName')" 
+              size="large"
+            />
           </el-form-item>
 
-          <el-form-item :label="$t('register.roomTypes')" prop="roomTypes">
+          <div class="section-title">{{ $t('register.specializedRoomTypes') }}</div>
+          <div class="section-subtitle">{{ $t('register.specializedRoomTypesDesc') }}</div>
+          
+          <el-form-item prop="roomTypes">
             <div class="room-types-grid">
               <el-checkbox-group v-model="registerForm.roomTypes">
-                <el-checkbox label="living">{{ $t('register.living') }}</el-checkbox>
+                <el-checkbox label="living">{{ $t('register.livingRoom') }}</el-checkbox>
                 <el-checkbox label="bedroom">{{ $t('register.bedroom') }}</el-checkbox>
                 <el-checkbox label="kitchen">{{ $t('register.kitchen') }}</el-checkbox>
                 <el-checkbox label="bathroom">{{ $t('register.bathroom') }}</el-checkbox>
-                <el-checkbox label="restaurant">{{ $t('register.restaurant') }}</el-checkbox>
+                <el-checkbox label="dining">{{ $t('register.diningRoom') }}</el-checkbox>
                 <el-checkbox label="study">{{ $t('register.study') }}</el-checkbox>
                 <el-checkbox label="balcony">{{ $t('register.balcony') }}</el-checkbox>
                 <el-checkbox label="entrance">{{ $t('register.entrance') }}</el-checkbox>
-                <el-checkbox label="children">{{ $t('register.children') }}</el-checkbox>
+                <el-checkbox label="kids">{{ $t('register.kidsRoom') }}</el-checkbox>
                 <el-checkbox label="storage">{{ $t('register.storage') }}</el-checkbox>
               </el-checkbox-group>
             </div>
           </el-form-item>
         </div>
 
-        <!-- 供应商专属表单 -->
-        <div v-if="registerForm.role === 'supplier'" class="role-specific-form supplier-form">
-          <div class="form-section-title">{{ $t('register.supplierInfo') }}</div>
-          
-          <el-form-item :label="$t('register.companyName')" prop="companyName">
-            <el-input v-model="registerForm.companyName" :placeholder="$t('register.companyNamePlaceholder')" size="large" />
-          </el-form-item>
-
-          <el-form-item :label="$t('register.contactPerson')" prop="contactPerson">
-            <el-input v-model="registerForm.contactPerson" :placeholder="$t('register.contactPersonPlaceholder')" size="large" />
-          </el-form-item>
-
-          <el-form-item :label="$t('register.contactPhone')" prop="contactPhone">
-            <el-input v-model="registerForm.contactPhone" :placeholder="$t('register.contactPhonePlaceholder')" size="large" />
-          </el-form-item>
-
-          <el-form-item :label="$t('register.companyAddress')" prop="companyAddress">
-            <el-input v-model="registerForm.companyAddress" :placeholder="$t('register.companyAddressPlaceholder')" size="large" />
-          </el-form-item>
-
-          <el-form-item :label="$t('register.businessScope')" prop="businessScope">
-            <el-input v-model="registerForm.businessScope" type="textarea" :rows="3" :placeholder="$t('register.businessScopePlaceholder')" />
-          </el-form-item>
-
-          <div class="address-row">
-            <el-form-item :label="$t('register.city')" prop="city" class="address-item">
-              <el-select v-model="registerForm.city" :placeholder="$t('register.selectCity')" size="large">
-                <el-option label="北京" value="beijing" />
-                <el-option label="上海" value="shanghai" />
-                <el-option label="广州" value="guangzhou" />
-                <el-option label="深圳" value="shenzhen" />
-              </el-select>
-            </el-form-item>
-
-            <el-form-item :label="$t('register.district')" prop="district" class="address-item">
-              <el-select v-model="registerForm.district" :placeholder="$t('register.selectDistrict')" size="large">
-                <el-option label="朝阳区" value="chaoyang" />
-                <el-option label="海淀区" value="haidian" />
-                <el-option label="西城区" value="xicheng" />
-              </el-select>
-            </el-form-item>
-          </div>
-
-          <div class="address-row">
-            <el-form-item :label="$t('register.street')" prop="street" class="address-item">
-              <el-input v-model="registerForm.street" :placeholder="$t('register.streetPlaceholder')" size="large" />
-            </el-form-item>
-
-            <el-form-item :label="$t('register.zipCode')" prop="zipCode" class="address-item">
-              <el-input v-model="registerForm.zipCode" :placeholder="$t('register.zipCodePlaceholder')" size="large" />
-            </el-form-item>
-          </div>
-
-          <el-form-item :label="$t('register.businessCategories')" prop="businessCategories">
-            <el-checkbox-group v-model="registerForm.businessCategories" class="business-categories">
-              <el-checkbox label="furniture">{{ $t('register.furniture') }}</el-checkbox>
-              <el-checkbox label="lighting">{{ $t('register.lighting') }}</el-checkbox>
-              <el-checkbox label="flooring">{{ $t('register.flooring') }}</el-checkbox>
-              <el-checkbox label="wallpaper">{{ $t('register.wallpaper') }}</el-checkbox>
-              <el-checkbox label="curtains">{{ $t('register.curtains') }}</el-checkbox>
-              <el-checkbox label="accessories">{{ $t('register.accessories') }}</el-checkbox>
-              <el-checkbox label="appliances">{{ $t('register.appliances') }}</el-checkbox>
-              <el-checkbox label="other">{{ $t('register.other') }}</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <el-form-item :label="$t('register.introduction')" prop="introduction">
-            <el-input v-model="registerForm.introduction" type="textarea" :rows="4" :placeholder="$t('register.introductionPlaceholder')" />
-          </el-form-item>
-        </div>
-
-        <!-- 施工方专属表单 -->
-        <div v-if="registerForm.role === 'contractor'" class="role-specific-form contractor-form">
-          <div class="form-section-title">{{ $t('register.contractorInfo') }}</div>
-          
-          <el-form-item :label="$t('register.contractorType')" prop="contractorType">
-            <el-radio-group v-model="registerForm.contractorType">
-              <el-radio label="individual">{{ $t('register.individual') }}</el-radio>
-              <el-radio label="team">{{ $t('register.team') }}</el-radio>
-              <el-radio label="company">{{ $t('register.company') }}</el-radio>
-            </el-radio-group>
-          </el-form-item>
-
-          <el-form-item :label="$t('register.contractorName')" prop="contractorName">
-            <el-input v-model="registerForm.contractorName" :placeholder="$t('register.contractorNamePlaceholder')" size="large" />
-          </el-form-item>
-
-          <el-form-item :label="$t('register.workTypes')" prop="workTypes">
-            <div class="work-types-grid">
-              <el-checkbox-group v-model="registerForm.workTypes">
-                <el-checkbox label="demolition">{{ $t('register.demolition') }}</el-checkbox>
-                <el-checkbox label="plumbing">{{ $t('register.plumbing') }}</el-checkbox>
-                <el-checkbox label="electrical">{{ $t('register.electrical') }}</el-checkbox>
-                <el-checkbox label="flooring">{{ $t('register.flooringWork') }}</el-checkbox>
-                <el-checkbox label="painting">{{ $t('register.painting') }}</el-checkbox>
-                <el-checkbox label="tiling">{{ $t('register.tiling') }}</el-checkbox>
-                <el-checkbox label="carpentry">{{ $t('register.carpentry') }}</el-checkbox>
-                <el-checkbox label="hvac">{{ $t('register.hvac') }}</el-checkbox>
-              </el-checkbox-group>
-            </div>
-          </el-form-item>
-
-          <el-form-item :label="$t('register.contractorPhone')" prop="contractorPhone">
-            <el-input v-model="registerForm.contractorPhone" :placeholder="$t('register.contractorPhonePlaceholder')" size="large" />
-          </el-form-item>
-
-          <div class="address-row">
-            <el-form-item :label="$t('register.contractorCity')" prop="contractorCity" class="address-item">
-              <el-select v-model="registerForm.contractorCity" :placeholder="$t('register.selectCity')" size="large">
-                <el-option label="北京" value="beijing" />
-                <el-option label="上海" value="shanghai" />
-                <el-option label="广州" value="guangzhou" />
-                <el-option label="深圳" value="shenzhen" />
-              </el-select>
-            </el-form-item>
-
-            <el-form-item :label="$t('register.contractorDistrict')" prop="contractorDistrict" class="address-item">
-              <el-select v-model="registerForm.contractorDistrict" :placeholder="$t('register.selectDistrict')" size="large">
-                <el-option label="朝阳区" value="chaoyang" />
-                <el-option label="海淀区" value="haidian" />
-                <el-option label="西城区" value="xicheng" />
-              </el-select>
-            </el-form-item>
-          </div>
-
-          <el-form-item :label="$t('register.contractorAddress')" prop="contractorAddress">
-            <el-input v-model="registerForm.contractorAddress" :placeholder="$t('register.contractorAddressPlaceholder')" size="large" />
-          </el-form-item>
-
-          <el-form-item :label="$t('register.contractorScope')" prop="contractorScope">
-            <el-input v-model="registerForm.contractorScope" type="textarea" :rows="3" :placeholder="$t('register.contractorScopePlaceholder')" />
-          </el-form-item>
-        </div>
-
-        <el-form-item prop="agreement">
+        <el-form-item prop="agreement" class="agreement-item">
           <el-checkbox v-model="registerForm.agreement">
             {{ $t('register.agreePrefix') }}
             <el-link type="primary" @click="showTerms">{{ $t('register.serviceTerms') }}</el-link>
@@ -227,13 +135,17 @@
             <el-link type="primary" @click="showPrivacy">{{ $t('register.privacyPolicy') }}</el-link>
           </el-checkbox>
         </el-form-item>
-      </el-form>
-      
-      <div class="register-footer">
+
         <div class="login-link">
           {{ $t('register.hasAccount') }}
           <el-link type="primary" @click="$router.push('/login')">{{ $t('register.toLogin') }}</el-link>
         </div>
+      </el-form>
+      
+      <div class="register-footer">
+        <el-button size="large" class="cancel-btn" @click="$router.push('/login')">
+          {{ $t('common.cancel') }}
+        </el-button>
         <el-button type="primary" size="large" :loading="loading" class="register-btn" @click="handleRegister">
           {{ $t('register.createAccount') }}
         </el-button>
@@ -246,7 +158,7 @@
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox, FormInstance, FormRules } from 'element-plus'
-import { User, Brush, Shop, Setting } from '@element-plus/icons-vue'
+import { User, Brush, Shop } from '@element-plus/icons-vue'
 import { registerApi } from '@/api/auth'
 import { useRoleStore } from '@/stores/role'
 import { useI18n } from 'vue-i18n'
@@ -261,12 +173,11 @@ const loading = ref(false)
 const emailCodeDisabled = ref(false)
 const countdown = ref(0)
 
-// 角色选项配置（注册时不包含guest）
+// 角色选项配置（注册时不包含guest和contractor）
 const roleOptions = [
   { value: 'user', icon: User },
   { value: 'designer', icon: Brush },
-  { value: 'supplier', icon: Shop },
-  { value: 'contractor', icon: Setting }
+  { value: 'supplier', icon: Shop }
 ]
 
 // 注册表单
@@ -277,7 +188,7 @@ const registerForm = reactive({
   emailCode: '',
   phone: '',
   agreement: false,
-  role: 'user' as 'designer' | 'supplier' | 'contractor' | 'user',
+  role: 'user' as 'designer' | 'supplier' | 'user',
   // 设计师专属字段
   designerType: 'individual',
   designerName: '',
@@ -293,16 +204,7 @@ const registerForm = reactive({
   street: '',
   zipCode: '',
   businessCategories: [] as string[],
-  introduction: '',
-  // 施工方专属字段
-  contractorType: 'individual',
-  contractorName: '',
-  workTypes: [] as string[],
-  contractorPhone: '',
-  contractorCity: '',
-  contractorDistrict: '',
-  contractorAddress: '',
-  contractorScope: ''
+  introduction: ''
 })
 
 // 初始化角色状态
@@ -323,7 +225,7 @@ watch(() => roleStore.selectedRole, (newRole) => {
   if (newRole === 'guest') {
     registerForm.role = 'user'
   } else {
-    registerForm.role = newRole as 'designer' | 'supplier' | 'contractor' | 'user'
+    registerForm.role = newRole as 'designer' | 'supplier' | 'user'
   }
 })
 
@@ -418,25 +320,6 @@ const registerRules: FormRules = {
         callback()
       }
     }}
-  ],
-  // 施工方专属验证
-  contractorName: [
-    { required: true, message: () => t('validation.contractorNameRequired'), trigger: 'blur', validator: (rule: any, value: string, callback: any) => {
-      if (registerForm.role === 'contractor' && !value) {
-        callback(new Error(t('validation.contractorNameRequired')))
-      } else {
-        callback()
-      }
-    }}
-  ],
-  contractorPhone: [
-    { required: true, message: () => t('validation.contractorPhoneRequired'), trigger: 'blur', validator: (rule: any, value: string, callback: any) => {
-      if (registerForm.role === 'contractor' && !value) {
-        callback(new Error(t('validation.contractorPhoneRequired')))
-      } else {
-        callback()
-      }
-    }}
   ]
 }
 
@@ -510,192 +393,379 @@ const handleRegister = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 30px 20px;
   position: relative;
 }
 
 .language-toggle {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  gap: 6px;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
 }
 
 .register-card {
   width: 100%;
-  max-width: 800px;
+  max-width: 60rem;
   background: white;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 40px 50px 50px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  position: relative;
 }
 
 .register-header {
-  text-align: center;
-  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  position: relative;
 }
 
 .register-header h1 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
+  color: #102129;
+  margin: 0;
+  text-align: center;
 }
 
-.register-header p {
-  color: #666;
-  font-size: 14px;
+.close-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #909399;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #606266;
+}
+
+.register-subtitle {
+  color: #909399;
+  font-size: 13px;
+  margin-top: 3%;
+  margin-bottom: 2%;
+  text-align: center;
 }
 
 .role-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .role-card {
-  padding: 20px;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid #E5E6EB;
+  border-radius: 0.5rem;
   text-align: center;
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-.role-card:hover,
-.role-card.active {
-  border-color: #409eff;
-  background: #f0f9ff;
-}
-
-.role-icon {
-  font-size: 40px;
-  color: #409eff;
-  margin-bottom: 8px;
-}
-
-.role-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 4px;
-}
-
-.role-desc {
-  font-size: 12px;
-  color: #666;
-}
-
-.code-wrapper {
+  transition: all 0.25s ease;
+  background: white;
+  min-height: 7.875rem;
   display: flex;
-  gap: 12px;
-}
-
-.code-input {
-  flex: 1;
-}
-
-.code-btn {
-  min-width: 120px;
-}
-
-.register-footer {
-  display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin-top: 20px;
-}
-
-.login-link {
-  color: #666;
-  font-size: 14px;
-}
-
-.register-btn {
-  min-width: 120px;
-  height: 48px;
-}
-
-.role-specific-form {
-  margin: 30px 0;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.designer-form {
-  background: #fff9e6;
-  border: 1px solid #ffd666;
-}
-
-.supplier-form {
-  background: #f0f9ff;
-  border: 1px solid #91d5ff;
-}
-
-.contractor-form {
-  background: #f6ffed;
-  border: 1px solid #b7eb8f;
-}
-
-.form-section-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.room-types-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-
-.work-types-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-
-.address-row {
-  display: flex;
-  gap: 16px;
-}
-
-.address-item {
-  flex: 1;
-}
-
-.business-categories {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
 }
 
 @media (max-width: 768px) {
   .role-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+.role-card:hover {
+  border-color: #00699A;
+  background: #f0f8fb;
+}
+
+.role-card.active {
+  border-color: #00699A;
+  background: #e6f4f9;
+}
+
+.role-card.active .role-name {
+  color: #00699A;
+}
+
+.role-card.active .role-desc {
+  color: #00699A;
+}
+
+.role-icon-wrapper {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0 auto 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.role-icon-svg {
+  width: 100%;
+  height: 100%;
+  color: #00699A;
+}
+
+.role-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #102129;
+  margin-bottom: 8px;
+}
+
+.role-desc {
+  font-size: 13px;
+  color: #909399;
+  line-height: 1.5;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.form-item-half {
+  flex: 1;
+  margin-bottom: 16px;
+}
+
+.register-form :deep(.el-form-item) {
+  margin-bottom: 16px;
+}
+
+.register-form :deep(.el-input__wrapper) {
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px #E5E6EB inset;
+  padding: 1px 15px;
+  background-color: white;
+}
+
+.register-form :deep(.el-input__inner) {
+  font-size: 14px;
+  color: #102129;
+  height: 38px;
+  line-height: 38px;
+}
+
+.register-form :deep(.el-input__inner::placeholder) {
+  color: #c0c4cc;
+  font-size: 13px;
+}
+
+/* 为必填输入框添加红色星号标记 */
+.register-form :deep(.required-field .el-input__wrapper::before) {
+  content: '*';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #f56c6c;
+  font-size: 14px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.register-form :deep(.required-field .el-input__inner) {
+  padding-left: 4px;
+}
+
+.register-form :deep(.el-input__wrapper:hover) {
+  box-shadow: 0 0 0 1px #c0c4cc inset;
+}
+
+.register-form :deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 1px #00699A inset;
+}
+
+.code-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.code-wrapper :deep(.el-input) {
+  width: 100%;
+}
+
+.code-wrapper :deep(.el-input__inner) {
+  padding-right: 120px;
+}
+
+.code-link {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  padding: 0;
+  height: auto;
+  color: #00699A;
+  white-space: nowrap;
+  z-index: 2;
+  font-weight: 400;
+}
+
+.code-link:hover {
+  color: #008bb8;
+  text-decoration: underline;
+}
+
+.code-link:disabled {
+  color: #c0c4cc;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.agreement-item {
+  margin-top: 12px;
+  margin-bottom: 10px;
+}
+
+.agreement-item :deep(.el-checkbox__label) {
+  font-size: 12px;
+  color: #102129;
+  line-height: 1.6;
+}
+
+.agreement-item :deep(.el-link) {
+  font-size: 12px;
+  vertical-align: baseline;
+}
+
+.login-link {
+  color: #102129;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.login-link :deep(.el-link) {
+  font-size: 13px;
+}
+
+.register-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #E5E6EB;
+}
+
+.cancel-btn {
+  min-width: 100px;
+  height: 40px;
+  border: 1px solid #E5E6EB;
+  color: #102129;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.cancel-btn:hover {
+  color: #00699A;
+  border-color: #b3dce8;
+  background: #e6f4f9;
+}
+
+.register-btn {
+  min-width: 140px;
+  height: 40px;
+  background: #333333;
+  border-color: #333333;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+}
+
+.register-btn:hover {
+  background: #4d4d4d;
+  border-color: #4d4d4d;
+}
+
+.designer-specific-section {
+  background: #f5f7fa;
+  padding: 20px;
+  border-radius: 6px;
+  margin: 20px 0;
+  border: 1px solid #E5E6EB;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #102129;
+  margin-bottom: 14px;
+}
+
+.section-subtitle {
+  font-size: 12px;
+  color: #909399;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.room-types-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.room-types-grid :deep(.el-checkbox) {
+  margin-right: 0;
+}
+
+.room-types-grid :deep(.el-checkbox__label) {
+  font-size: 13px;
+  color: #102129;
+}
+
+@media (max-width: 768px) {
+  .register-card {
+    padding: 32px 24px;
+  }
+
+  .role-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
   }
   
   .register-footer {
-    flex-direction: column;
-    gap: 16px;
+    flex-direction: column-reverse;
   }
   
+  .cancel-btn,
   .register-btn {
     width: 100%;
   }
   
-  .room-types-grid,
-  .work-types-grid,
-  .business-categories {
-    grid-template-columns: 1fr;
+  .room-types-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  .address-row {
-    flex-direction: column;
-    gap: 0;
-  }
+}
+
+/* 特殊处理：3个角色卡片均匀分布 */
+.role-card:nth-child(4) {
+  display: none;
 }
 </style>

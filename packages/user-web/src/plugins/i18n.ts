@@ -26,6 +26,11 @@ const languages = {
       'nav.request': '提交需求',
       'nav.login': '登录',
       'nav.register': '注册',
+      'nav.profile': '个人中心',
+      'nav.favorites': '我的收藏',
+      'nav.logout': '退出登录',
+      'nav.guest': '游客',
+      'nav.upgradeAccount': '升级为正式用户',
       
       // 关于我们下拉菜单
       'about.company': 'XXX设计',
@@ -150,7 +155,61 @@ const languages = {
       'common.share': '分享',
       'common.like': '点赞',
       'common.favorite': '收藏',
-      'common.copyright': '© 2025 Home Decor Platform. All Rights Reserved. Contact Us: 1-800-XXX-XXXX'
+      'common.copyright': '© 2025 Home Decor Platform. All Rights Reserved. Contact Us: 1-800-XXX-XXXX',
+      'common.loading': '加载中...',
+      'common.logoutConfirm': '确定要退出登录吗？',
+      
+      // 注册相关
+      'register.createAccount': '创建您的账户',
+      'register.joinPlatform': '加入我们的平台，成为用户、设计师、供应商、施工方或项目经理',
+      'register.email': '邮箱',
+      'register.password': '密码',
+      'register.confirmPassword': '确认密码',
+      'register.emailCode': '邮箱验证码',
+      'register.phone': '手机号码',
+      'register.sendCode': '发送验证码',
+      'register.codeSent': '验证码已发送',
+      'register.agreePrefix': '我同意',
+      'register.serviceTerms': '服务条款',
+      'register.privacyPolicy': '隐私政策',
+      'register.termsContent': '这里是服务条款的详细内容...',
+      'register.privacyContent': '这里是隐私政策的详细内容...',
+      'register.hasAccount': '已有账户？',
+      'register.toLogin': '立即登录',
+      'register.success': '注册成功',
+      'register.failed': '注册失败',
+      
+      // 角色
+      'roles.user': '用户',
+      'roles.userDesc': '浏览商品下单',
+      'roles.designer': '设计师',
+      'roles.designerDesc': '上传和销售您的设计',
+      'roles.supplier': '供应商',
+      'roles.supplierDesc': '在我们的市场上提供产品',
+      
+      // 设计师专属
+      'register.designerNature': '设计师性质',
+      'register.individual': '个人',
+      'register.studio': '工作室',
+      'register.company': '公司',
+      'register.designerName': '设计师/公司名称',
+      'register.specializedRoomTypes': '擅长房间类型',
+      'register.specializedRoomTypesDesc': '选择您擅长的房间类型（可多选）',
+      'register.livingRoom': '客厅',
+      'register.bedroom': '卧室',
+      'register.kitchen': '厨房',
+      'register.bathroom': '卫生间',
+      'register.diningRoom': '餐厅',
+      'register.study': '书房',
+      'register.balcony': '阳台',
+      'register.entrance': '玄关',
+      'register.kidsRoom': '儿童房',
+      'register.storage': '储物间',
+      
+      // 验证
+      'validation.emailRequired': '请输入邮箱',
+      'validation.passwordNotMatch': '两次输入的密码不一致',
+      'validation.agreementRequired': '请同意服务条款和隐私政策'
     }
   },
   en: {
@@ -168,6 +227,11 @@ const languages = {
       'nav.request': 'Submit Request',
       'nav.login': 'Login',
       'nav.register': 'Register',
+      'nav.profile': 'Profile',
+      'nav.favorites': 'My Favorites',
+      'nav.logout': 'Logout',
+      'nav.guest': 'Guest',
+      'nav.upgradeAccount': 'Upgrade to Full Account',
       
       // About Us dropdown
       'about.company': 'XXX Design',
@@ -292,7 +356,61 @@ const languages = {
       'common.share': 'Share',
       'common.like': 'Like',
       'common.favorite': 'Favorite',
-      'common.copyright': '© 2025 Home Decor Platform. All Rights Reserved. Contact Us: 1-800-XXX-XXXX'
+      'common.copyright': '© 2025 Home Decor Platform. All Rights Reserved. Contact Us: 1-800-XXX-XXXX',
+      'common.loading': 'Loading...',
+      'common.logoutConfirm': 'Are you sure you want to logout?',
+      
+      // Register
+      'register.createAccount': 'Create your account',
+      'register.joinPlatform': 'Join our platform as a Customer, Designer, Supplier, Contractor or PM',
+      'register.email': 'Email',
+      'register.password': 'Password',
+      'register.confirmPassword': 'Confirm password',
+      'register.emailCode': 'Email verification code',
+      'register.phone': 'Phone number',
+      'register.sendCode': 'Send verification code',
+      'register.codeSent': 'Verification code sent',
+      'register.agreePrefix': 'I agree to the',
+      'register.serviceTerms': 'Terms of Service',
+      'register.privacyPolicy': 'Privacy Policy',
+      'register.termsContent': 'Terms of Service content...',
+      'register.privacyContent': 'Privacy Policy content...',
+      'register.hasAccount': 'Already have an account?',
+      'register.toLogin': 'Sign in',
+      'register.success': 'Registration successful',
+      'register.failed': 'Registration failed',
+      
+      // Roles
+      'roles.user': 'Customer',
+      'roles.userDesc': 'Browse products and order',
+      'roles.designer': 'Designer',
+      'roles.designerDesc': 'Upload and sell your designs',
+      'roles.supplier': 'Supplier',
+      'roles.supplierDesc': 'Offer products on our marketplace',
+      
+      // Designer specific
+      'register.designerNature': 'Designer Nature',
+      'register.individual': 'Individual',
+      'register.studio': 'Studio',
+      'register.company': 'Company',
+      'register.designerName': 'Designer/Company Name',
+      'register.specializedRoomTypes': 'Specialized Room Types',
+      'register.specializedRoomTypesDesc': 'Select the room types you specialize in (multiple selections allowed)',
+      'register.livingRoom': 'Living Room',
+      'register.bedroom': 'Bedroom',
+      'register.kitchen': 'Kitchen',
+      'register.bathroom': 'Bathroom',
+      'register.diningRoom': 'Dining Room',
+      'register.study': 'Study',
+      'register.balcony': 'Balcony',
+      'register.entrance': 'Entrance',
+      'register.kidsRoom': 'Kids Room',
+      'register.storage': 'Storage',
+      
+      // Validation
+      'validation.emailRequired': 'Please enter email',
+      'validation.passwordNotMatch': 'Passwords do not match',
+      'validation.agreementRequired': 'Please agree to the Terms of Service and Privacy Policy'
     }
   },
   es: {
@@ -434,7 +552,61 @@ const languages = {
       'common.share': 'Compartir',
       'common.like': 'Me Gusta',
       'common.favorite': 'Favorito',
-      'common.copyright': '© 2025 Home Decor Platform. Todos los Derechos Reservados. Contáctanos: 1-800-XXX-XXXX'
+      'common.copyright': '© 2025 Home Decor Platform. Todos los Derechos Reservados. Contáctanos: 1-800-XXX-XXXX',
+      'common.loading': 'Cargando...',
+      'common.logoutConfirm': '¿Estás seguro de que quieres cerrar sesión?',
+      
+      // Registro
+      'register.createAccount': 'Crea tu cuenta',
+      'register.joinPlatform': 'Únete a nuestra plataforma como Cliente, Diseñador, Proveedor, Contratista o PM',
+      'register.email': 'Correo electrónico',
+      'register.password': 'Contraseña',
+      'register.confirmPassword': 'Confirmar contraseña',
+      'register.emailCode': 'Código de verificación de correo',
+      'register.phone': 'Número de teléfono',
+      'register.sendCode': 'Enviar código de verificación',
+      'register.codeSent': 'Código de verificación enviado',
+      'register.agreePrefix': 'Acepto los',
+      'register.serviceTerms': 'Términos de Servicio',
+      'register.privacyPolicy': 'Política de Privacidad',
+      'register.termsContent': 'Contenido de Términos de Servicio...',
+      'register.privacyContent': 'Contenido de Política de Privacidad...',
+      'register.hasAccount': '¿Ya tienes una cuenta?',
+      'register.toLogin': 'Iniciar sesión',
+      'register.success': 'Registro exitoso',
+      'register.failed': 'Registro fallido',
+      
+      // Roles
+      'roles.user': 'Cliente',
+      'roles.userDesc': 'Navega productos y ordena',
+      'roles.designer': 'Diseñador',
+      'roles.designerDesc': 'Sube y vende tus diseños',
+      'roles.supplier': 'Proveedor',
+      'roles.supplierDesc': 'Ofrece productos en nuestro mercado',
+      
+      // Diseñador específico
+      'register.designerNature': 'Naturaleza del Diseñador',
+      'register.individual': 'Individual',
+      'register.studio': 'Estudio',
+      'register.company': 'Empresa',
+      'register.designerName': 'Nombre del Diseñador/Empresa',
+      'register.specializedRoomTypes': 'Tipos de Habitación Especializados',
+      'register.specializedRoomTypesDesc': 'Selecciona los tipos de habitación en los que te especializas (se permiten múltiples selecciones)',
+      'register.livingRoom': 'Sala de Estar',
+      'register.bedroom': 'Dormitorio',
+      'register.kitchen': 'Cocina',
+      'register.bathroom': 'Baño',
+      'register.diningRoom': 'Comedor',
+      'register.study': 'Estudio',
+      'register.balcony': 'Balcón',
+      'register.entrance': 'Entrada',
+      'register.kidsRoom': 'Habitación Infantil',
+      'register.storage': 'Almacén',
+      
+      // Validación
+      'validation.emailRequired': 'Por favor ingresa el correo electrónico',
+      'validation.passwordNotMatch': 'Las contraseñas no coinciden',
+      'validation.agreementRequired': 'Por favor acepta los Términos de Servicio y la Política de Privacidad'
     }
   }
 }

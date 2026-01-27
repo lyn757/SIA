@@ -63,8 +63,9 @@
             <router-link to="/cart" class="btn btn-outline-orange btn-sm">{{ $t('nav.cart') }}</router-link>
             <router-link to="/profile/orders" class="btn btn-outline-orange btn-sm">{{ $t('nav.orders') }}</router-link>
             <router-link to="/post-demand" class="btn btn-outline-orange btn-sm">{{ $t('nav.request') }}</router-link>
-            <router-link to="/login" class="btn btn-outline-orange btn-sm">{{ $t('nav.login') }}</router-link>
-            <router-link to="/register" class="btn btn-orange btn-sm">{{ $t('nav.register') }}</router-link>
+            
+            <!-- 用户头像组件 -->
+            <UserAvatar />
           </div>
         </div>
       </div>
@@ -369,6 +370,7 @@
 import { ref, inject, onMounted, computed, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+import UserAvatar from '@/components/UserAvatar.vue'
 import type { I18nPlugin } from '@/plugins/i18n'
 
 const router = useRouter()

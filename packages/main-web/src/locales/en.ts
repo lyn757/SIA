@@ -39,7 +39,10 @@ export default {
     toRegister: 'Register new account',
     registerNow: 'Register now',
     forgotPassword: 'Forgot password?',
-    orLoginWith: 'Or continue with'
+    orLoginWith: 'Or continue with',
+    guestAccess: 'Access as Guest',
+    guestAccessSuccess: 'Guest login successful',
+    guestAccessFailed: 'Guest login failed'
   },
   
   // Register
@@ -76,22 +79,28 @@ export default {
     // Designer specific
     designerInfo: 'Designer Type',
     designerType: 'Designer Type',
+    designerNature: 'Designer Nature',
     individual: 'Individual',
     studio: 'Studio',
     company: 'Company',
     designerName: 'Designer/Company Name',
     designerNamePlaceholder: 'Your design studio name',
+    specializedRoomTypes: 'Specialized Room Types',
+    specializedRoomTypesDesc: 'Select the room types you specialize in (multiple selections allowed)',
     roomTypes: 'Specialized Room Types',
-    living: 'Living Room',
+    livingRoom: 'Living Room',
     bedroom: 'Bedroom',
     kitchen: 'Kitchen',
     bathroom: 'Bathroom',
-    restaurant: 'Dining Room',
+    diningRoom: 'Dining Room',
     study: 'Study',
     balcony: 'Balcony',
     entrance: 'Entrance',
-    children: 'Children Room',
+    kidsRoom: 'Kids Room',
     storage: 'Storage',
+    living: 'Living Room',
+    restaurant: 'Dining Room',
+    children: 'Children Room',
     // Supplier specific
     supplierInfo: 'Company Name',
     companyName: 'Company Name',
@@ -238,6 +247,21 @@ export default {
     joinUsDesc: 'Register as a formal user to enjoy complete services',
     notice: 'Guest Notice',
     noticeDesc: 'You are currently visiting as a guest with limited functionality. Register and login for full services.',
-    guestLimitMessage: 'Guest mode has limited functionality. Please register and login for full features.'
+    guestLimitMessage: 'Guest mode has limited functionality. Please register and login for full features.',
+    // Guest account save dialog
+    saveAccountTitle: 'Save Your Account',
+    accountGeneratedTitle: 'Temporary Account Generated',
+    accountGeneratedDesc: 'You can modify the username and password. Save it to continue using this account next time. Click cancel if not needed.',
+    username: 'Username',
+    password: 'Password',
+    confirmPassword: 'Confirm Password',
+    usernamePlaceholder: 'Enter username',
+    passwordPlaceholder: 'Enter password',
+    confirmPasswordPlaceholder: 'Re-enter password',
+    saveTip: 'After saving, you can use this account to login and continue your previous operations.',
+    saveAccount: 'Save Account',
+    noThanks: 'No Thanks',
+    saveSuccess: 'Account saved successfully',
+    saveFailed: 'Failed to save account'
   }
 }

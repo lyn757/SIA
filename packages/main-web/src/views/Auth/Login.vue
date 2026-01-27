@@ -37,6 +37,10 @@
             {{ $t('login.submit') }}
           </el-button>
           
+          <el-button size="large" class="guest-btn" @click="handleGuestAccess">
+            {{ $t('login.guestAccess') }}
+          </el-button>
+          
           <el-button size="large" class="register-btn" @click="$router.push('/register')">
             {{ $t('login.toRegister') }}
           </el-button>
@@ -69,7 +73,7 @@
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, FormInstance, FormRules } from 'element-plus'
-import { User, Brush, Shop, Setting, UserFilled } from '@element-plus/icons-vue'
+import { User, Brush, Shop, UserFilled } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRoleStore } from '@/stores/role'
 import { useI18n } from 'vue-i18n'
@@ -88,7 +92,6 @@ const roleOptions = [
   { value: 'user', icon: User },
   { value: 'designer', icon: Brush },
   { value: 'supplier', icon: Shop },
-  { value: 'contractor', icon: Setting },
   { value: 'guest', icon: UserFilled }
 ]
 
@@ -96,7 +99,7 @@ const roleOptions = [
 const loginForm = reactive({
   username: '',
   password: '',
-  role: 'user' as 'designer' | 'supplier' | 'contractor' | 'user' | 'guest'
+  role: 'user' as 'designer' | 'supplier' | 'user' | 'guest'
 })
 
 // 初始化角色状态
@@ -142,7 +145,6 @@ const handleLogin = async () => {
     const roleRouteMap = {
       designer: '/designer',
       supplier: '/supplier',
-      contractor: '/contractor',
       user: '/user',
       guest: '/guest'
     }
@@ -151,6 +153,26 @@ const handleLogin = async () => {
     
   } catch (error: any) {
     ElMessage.error(error.message || t('login.failed'))
+  } finally {
+    loading.value = false
+  }
+}
+
+// 处理游客访问
+const handleGuestAccess = async () => {
+  try {
+    loading.value = true
+    
+    // 创建游客账号并自动登录
+    await authStore.createGuestAccount()
+    
+    ElMessage.success(t('login.guestAccessSuccess'))
+    
+    // 跳转到用户端
+    router.push('/user')
+    
+  } catch (error: any) {
+    ElMessage.error(error.message || t('login.guestAccessFailed'))
   } finally {
     loading.value = false
   }
@@ -188,20 +210,20 @@ const handleLogin = async () => {
 .login-card h1 {
   font-size: 24px;
   font-weight: 600;
-  color: #333;
+  color: #102129;
   margin-bottom: 30px;
 }
 
 .role-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin-bottom: 30px;
 }
 
 .role-card {
   padding: 20px;
-  border: 2px solid #e5e7eb;
+  border: 1px solid #E5E6EB;
   border-radius: 12px;
   text-align: center;
   cursor: pointer;
@@ -210,20 +232,28 @@ const handleLogin = async () => {
 
 .role-card:hover,
 .role-card.active {
-  border-color: #409eff;
-  background: #f0f9ff;
+  border-color: #00699A;
+  background: #f0f8fb;
+}
+
+.role-card.active .role-name {
+  color: #00699A;
+}
+
+.role-card.active .role-desc {
+  color: #00699A;
 }
 
 .role-icon {
   font-size: 40px;
-  color: #409eff;
+  color: #00699A;
   margin-bottom: 8px;
 }
 
 .role-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #102129;
   margin-bottom: 4px;
 }
 
@@ -233,7 +263,7 @@ const handleLogin = async () => {
 }
 
 .login-form-wrapper {
-  border: 2px solid #409eff;
+  border: 2px solid #00699A;
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 20px;
@@ -250,16 +280,28 @@ const handleLogin = async () => {
 }
 
 .login-btn,
+.guest-btn,
 .register-btn {
   width: 100%;
   height: 48px;
   margin-bottom: 12px;
 }
 
+.guest-btn {
+  background: #67c23a;
+  border: 1px solid #67c23a;
+  color: white;
+}
+
+.guest-btn:hover {
+  background: #85ce61;
+  border-color: #85ce61;
+}
+
 .register-btn {
   background: white;
-  border: 1px solid #409eff;
-  color: #409eff;
+  border: 1px solid #00699A;
+  color: #00699A;
 }
 
 .forgot-password {

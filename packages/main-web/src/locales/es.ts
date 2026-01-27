@@ -39,7 +39,10 @@ export default {
     toRegister: 'Registrar nueva cuenta',
     registerNow: 'Registrarse ahora',
     forgotPassword: '¿Olvidaste tu contraseña?',
-    orLoginWith: 'O continúa con'
+    orLoginWith: 'O continúa con',
+    guestAccess: 'Acceder como Invitado',
+    guestAccessSuccess: 'Inicio de sesión de invitado exitoso',
+    guestAccessFailed: 'Inicio de sesión de invitado fallido'
   },
   
   // Registro
@@ -76,22 +79,28 @@ export default {
     // Específico para diseñadores
     designerInfo: 'Tipo de Diseñador',
     designerType: 'Tipo de Diseñador',
+    designerNature: 'Naturaleza del Diseñador',
     individual: 'Individual',
     studio: 'Estudio',
     company: 'Empresa',
     designerName: 'Nombre del Diseñador/Empresa',
     designerNamePlaceholder: 'Nombre de tu estudio de diseño',
+    specializedRoomTypes: 'Tipos de Habitación Especializados',
+    specializedRoomTypesDesc: 'Selecciona los tipos de habitación en los que te especializas (se permiten múltiples selecciones)',
     roomTypes: 'Tipos de Habitación Especializados',
-    living: 'Sala de Estar',
+    livingRoom: 'Sala de Estar',
     bedroom: 'Dormitorio',
     kitchen: 'Cocina',
     bathroom: 'Baño',
-    restaurant: 'Comedor',
+    diningRoom: 'Comedor',
     study: 'Estudio',
     balcony: 'Balcón',
     entrance: 'Entrada',
-    children: 'Habitación Infantil',
+    kidsRoom: 'Habitación Infantil',
     storage: 'Almacén',
+    living: 'Sala de Estar',
+    restaurant: 'Comedor',
+    children: 'Habitación Infantil',
     // Específico para proveedores
     supplierInfo: 'Nombre de la Empresa',
     companyName: 'Nombre de la Empresa',
@@ -238,6 +247,21 @@ export default {
     joinUsDesc: 'Regístrate como usuario formal para disfrutar servicios completos',
     notice: 'Aviso de Invitado',
     noticeDesc: 'Actualmente estás visitando como invitado con funcionalidad limitada. Regístrate e inicia sesión para servicios completos.',
-    guestLimitMessage: 'El modo invitado tiene funcionalidad limitada. Por favor regístrate e inicia sesión para características completas.'
+    guestLimitMessage: 'El modo invitado tiene funcionalidad limitada. Por favor regístrate e inicia sesión para características completas.',
+    // Diálogo de guardar cuenta de invitado
+    saveAccountTitle: 'Guardar Tu Cuenta',
+    accountGeneratedTitle: 'Cuenta Temporal Generada',
+    accountGeneratedDesc: 'Puedes modificar el nombre de usuario y la contraseña. Guárdalo para continuar usando esta cuenta la próxima vez. Haz clic en cancelar si no es necesario.',
+    username: 'Nombre de Usuario',
+    password: 'Contraseña',
+    confirmPassword: 'Confirmar Contraseña',
+    usernamePlaceholder: 'Ingresa nombre de usuario',
+    passwordPlaceholder: 'Ingresa contraseña',
+    confirmPasswordPlaceholder: 'Reingresa contraseña',
+    saveTip: 'Después de guardar, puedes usar esta cuenta para iniciar sesión y continuar tus operaciones anteriores.',
+    saveAccount: 'Guardar Cuenta',
+    noThanks: 'No Gracias',
+    saveSuccess: 'Cuenta guardada exitosamente',
+    saveFailed: 'Error al guardar cuenta'
   }
 }

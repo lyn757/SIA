@@ -8,8 +8,12 @@ const MICRO_APP_CONFIG = {
     name: 'designer-web'
   },
   'supplier-web': {
-    url: 'http://localhost:8082',
+    url: 'http://localhost:8082', 
     name: 'supplier-web'
+  },
+  'contractor-web': {
+    url: 'http://localhost:8083',
+    name: 'contractor-web'
   },
   'user-web': {
     url: 'http://localhost:8084',
@@ -39,12 +43,12 @@ export const broadcastToMicroApps = (data: any) => {
     try {
       // 使用 wujie bus 广播
       bus.$emit(`${appName}-message`, data)
-
+      
       // 同时更新 localStorage 以确保数据同步
       if (data.type === 'LANGUAGE_CHANGE') {
         localStorage.setItem('locale', data.payload.locale)
       }
-
+      
       if (data.type === 'LOGIN_STATUS_CHANGE') {
         if (data.payload.isLoggedIn) {
           localStorage.setItem('token', data.payload.token)

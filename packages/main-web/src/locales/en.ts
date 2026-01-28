@@ -22,7 +22,7 @@ export default {
     register: 'Register',
     and: 'and'
   },
-  
+
   // Login
   login: {
     title: 'User Login',
@@ -44,38 +44,38 @@ export default {
     guestAccessSuccess: 'Guest login successful',
     guestAccessFailed: 'Guest login failed'
   },
-  
+
   // Register
   register: {
     title: 'User Registration',
-    createAccount: 'Create Your Account',
-    joinPlatform: 'Join our platform as user, designer, supplier, contractor or project manager',
-    subtitle: 'Join our platform as user, designer, supplier or project manager',
+    createAccount: 'Create your account',
+    joinPlatform: 'Join our platform as a Customer, Designer, Supplier,Contractor or PM',
+    subtitle: 'Join our platform as a Customer, Designer, Supplier,Contractor or PM',
     email: 'Email',
     password: 'Password',
-    confirmPassword: 'Confirm Password',
-    emailCode: 'Email Verification Code',
-    phone: 'Phone Number',
+    confirmPassword: 'Confirm password',
+    emailCode: 'Email verification code',
+    phone: 'Phone number',
     usernamePlaceholder: 'Please enter username',
     emailPlaceholder: 'your@email.com',
     passwordPlaceholder: 'Enter password',
     confirmPasswordPlaceholder: 'Confirm password',
     emailCodePlaceholder: 'Enter verification code',
     phonePlaceholder: 'Optional',
-    sendCode: 'Send Code',
+    sendCode: 'Send verification code',
     codeSent: 'Verification code sent',
     codeSendFailed: 'Failed to send verification code',
-    agreePrefix: 'I agree to',
-    agreeToTerms: 'I agree to',
+    agreePrefix: 'I agree to the',
+    agreeToTerms: 'I agree to the',
     serviceTerms: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
     termsContent: 'Here is the detailed content of the terms of service...',
     privacyContent: 'Here is the detailed content of the privacy policy...',
-    submit: 'Register',
+    submit: 'Create account',
     success: 'Registration successful',
     failed: 'Registration failed',
     hasAccount: 'Already have an account?',
-    toLogin: 'Login now',
+    toLogin: 'Sign in',
     // Designer specific
     designerInfo: 'Designer Type',
     designerType: 'Designer Type',
@@ -156,21 +156,21 @@ export default {
     contractorScope: 'Business Scope',
     contractorScopePlaceholder: 'Describe your construction service scope'
   },
-  
+
   // Roles
   roles: {
-    designer: 'B-side Designer',
+    designer: 'Designer',
     designerDesc: 'Upload and sell your designs',
-    supplier: 'B-side Supplier',
-    supplierDesc: 'Sell products on platform',
+    supplier: 'Supplier',
+    supplierDesc: 'Offer products on our marketplace',
     contractor: 'B-side Contractor',
     contractorDesc: 'Take on renovation projects',
-    user: 'C-side User',
-    userDesc: 'Browse and order products',
+    user: 'Customer',
+    userDesc: 'Browse products and order',
     guest: 'Guest',
     guestDesc: 'Visitor browsing mode'
   },
-  
+
   // Validation
   validation: {
     usernameRequired: 'Please enter username',
@@ -191,7 +191,7 @@ export default {
     contractorNameRequired: 'Please enter contractor name',
     contractorPhoneRequired: 'Please enter contractor contact phone'
   },
-  
+
   // Navigation
   nav: {
     dashboard: 'Dashboard',
@@ -203,7 +203,7 @@ export default {
     profile: 'Profile',
     settings: 'Settings'
   },
-  
+
   // Page titles
   dashboard: {
     title: 'Dashboard',
@@ -213,27 +213,27 @@ export default {
     supplierDesc: 'Supplier management platform for orders and inventory',
     userDesc: 'C-side user interface providing excellent user experience'
   },
-  
+
   designer: {
     title: 'B-side Designer',
     app: 'Designer App'
   },
-  
+
   supplier: {
     title: 'B-side Supplier',
     app: 'Supplier App'
   },
-  
+
   contractor: {
     title: 'B-side Contractor',
     app: 'Contractor App'
   },
-  
+
   user: {
     title: 'C-side User',
     app: 'User App'
   },
-  
+
   guest: {
     title: 'Guest Mode',
     dashboard: 'Guest Dashboard',

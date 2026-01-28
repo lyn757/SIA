@@ -30,8 +30,8 @@ const languages = {
       'nav.favorites': '我的收藏',
       'nav.logout': '退出登录',
       'nav.guest': '游客',
-      'nav.upgradeAccount': '升级为正式用户',
-      
+      'nav.upgradeAccount': '成为正式用户',
+
       // 关于我们下拉菜单
       'about.company': 'XXX设计',
       'about.description': '致力于创造美好居住体验，提供一站式家居设计解决方案',
@@ -48,7 +48,7 @@ const languages = {
       'about.address': '美国硅谷XXXXXX',
       'about.phone': '400-888-8888',
       'about.email': '123456@mail.com',
-      
+
       // 首页
       'home.brand': '🏠 Home Decor',
       'home.search': '搜索设计...',
@@ -101,7 +101,7 @@ const languages = {
       'home.event.periodDesc': '即日起至2024年12月31日，享受8折优惠！',
       'home.event.howto': '使用方法：',
       'home.event.howtoDesc': '满减$20优惠券，无门槛，可叠加！代码：SALE20',
-      
+
       // 房间类型
       'room.all': '全部',
       'room.kitchen': '厨房',
@@ -111,7 +111,7 @@ const languages = {
       'room.dining': '餐厅',
       'room.entryway': '玄关',
       'room.whole': '全屋',
-      
+
       // 颜色
       'color.white': '白色',
       'color.black': '黑色',
@@ -127,7 +127,7 @@ const languages = {
       'color.picker.selected': '已选择',
       'color.picker.cancel': '取消',
       'color.picker.add': '添加到筛选',
-      
+
       // 页面标题
       'page.shop': '单品商城',
       'page.designers': '设计师',
@@ -137,7 +137,7 @@ const languages = {
       'page.caseDetail': '案例详情',
       'page.caseId': '案例ID',
       'page.developing': '页面开发中...',
-      
+
       // 按钮和操作
       'action.like': '点赞',
       'action.favorite': '收藏',
@@ -158,7 +158,7 @@ const languages = {
       'common.copyright': '© 2025 Home Decor Platform. All Rights Reserved. Contact Us: 1-800-XXX-XXXX',
       'common.loading': '加载中...',
       'common.logoutConfirm': '确定要退出登录吗？',
-      
+
       // 注册相关
       'register.createAccount': '创建您的账户',
       'register.joinPlatform': '加入我们的平台，成为用户、设计师、供应商、施工方或项目经理',
@@ -178,7 +178,7 @@ const languages = {
       'register.toLogin': '立即登录',
       'register.success': '注册成功',
       'register.failed': '注册失败',
-      
+
       // 角色
       'roles.user': '用户',
       'roles.userDesc': '浏览商品下单',
@@ -186,7 +186,7 @@ const languages = {
       'roles.designerDesc': '上传和销售您的设计',
       'roles.supplier': '供应商',
       'roles.supplierDesc': '在我们的市场上提供产品',
-      
+
       // 设计师专属
       'register.designerNature': '设计师性质',
       'register.individual': '个人',
@@ -205,7 +205,7 @@ const languages = {
       'register.entrance': '玄关',
       'register.kidsRoom': '儿童房',
       'register.storage': '储物间',
-      
+
       // 验证
       'validation.emailRequired': '请输入邮箱',
       'validation.passwordNotMatch': '两次输入的密码不一致',
@@ -231,8 +231,8 @@ const languages = {
       'nav.favorites': 'My Favorites',
       'nav.logout': 'Logout',
       'nav.guest': 'Guest',
-      'nav.upgradeAccount': 'Upgrade to Full Account',
-      
+      'nav.upgradeAccount': 'Become a Full Member',
+
       // About Us dropdown
       'about.company': 'XXX Design',
       'about.description': 'Committed to creating beautiful living experiences and providing one-stop home design solutions',
@@ -249,7 +249,7 @@ const languages = {
       'about.address': 'Silicon Valley, USA XXXXXX',
       'about.phone': '400-888-8888',
       'about.email': '123456@mail.com',
-      
+
       // Home
       'home.brand': '🏠 Home Decor',
       'home.search': 'Search designs...',
@@ -302,7 +302,7 @@ const languages = {
       'home.event.periodDesc': 'Now through December 31, 2024, enjoy 20% off!',
       'home.event.howto': 'How to Redeem:',
       'home.event.howtoDesc': 'Get $20 off coupon with no minimum purchase, stackable! Code: SALE20',
-      
+
       // Room types
       'room.all': 'All',
       'room.kitchen': 'Kitchen',
@@ -312,7 +312,7 @@ const languages = {
       'room.dining': 'Dining Room',
       'room.entryway': 'Entryway',
       'room.whole': 'Whole House',
-      
+
       // Colors
       'color.white': 'White',
       'color.black': 'Black',
@@ -328,7 +328,7 @@ const languages = {
       'color.picker.selected': 'Selected',
       'color.picker.cancel': 'Cancel',
       'color.picker.add': 'Add to Filter',
-      
+
       // Page titles
       'page.shop': 'Shop',
       'page.designers': 'Designers',
@@ -338,7 +338,7 @@ const languages = {
       'page.caseDetail': 'Case Detail',
       'page.caseId': 'Case ID',
       'page.developing': 'Page under development...',
-      
+
       // Buttons and actions
       'action.like': 'Like',
       'action.favorite': 'Favorite',
@@ -359,7 +359,7 @@ const languages = {
       'common.copyright': '© 2025 Home Decor Platform. All Rights Reserved. Contact Us: 1-800-XXX-XXXX',
       'common.loading': 'Loading...',
       'common.logoutConfirm': 'Are you sure you want to logout?',
-      
+
       // Register
       'register.createAccount': 'Create your account',
       'register.joinPlatform': 'Join our platform as a Customer, Designer, Supplier, Contractor or PM',
@@ -379,7 +379,7 @@ const languages = {
       'register.toLogin': 'Sign in',
       'register.success': 'Registration successful',
       'register.failed': 'Registration failed',
-      
+
       // Roles
       'roles.user': 'Customer',
       'roles.userDesc': 'Browse products and order',
@@ -387,7 +387,7 @@ const languages = {
       'roles.designerDesc': 'Upload and sell your designs',
       'roles.supplier': 'Supplier',
       'roles.supplierDesc': 'Offer products on our marketplace',
-      
+
       // Designer specific
       'register.designerNature': 'Designer Nature',
       'register.individual': 'Individual',
@@ -406,7 +406,7 @@ const languages = {
       'register.entrance': 'Entrance',
       'register.kidsRoom': 'Kids Room',
       'register.storage': 'Storage',
-      
+
       // Validation
       'validation.emailRequired': 'Please enter email',
       'validation.passwordNotMatch': 'Passwords do not match',
@@ -428,7 +428,7 @@ const languages = {
       'nav.request': 'Enviar Solicitud',
       'nav.login': 'Iniciar Sesión',
       'nav.register': 'Registrarse',
-      
+
       // Menú Acerca de
       'about.company': 'XXX Diseño',
       'about.description': 'Comprometidos a crear experiencias de vida hermosas y brindar soluciones integrales de diseño del hogar',
@@ -445,7 +445,7 @@ const languages = {
       'about.address': 'Silicon Valley, EE.UU. XXXXXX',
       'about.phone': '400-888-8888',
       'about.email': '123456@mail.com',
-      
+
       // Inicio
       'home.brand': '🏠 Home Decor',
       'home.search': 'Buscar diseños...',
@@ -498,7 +498,7 @@ const languages = {
       'home.event.periodDesc': '¡Desde ahora hasta el 31 de diciembre de 2024, disfruta 20% de descuento!',
       'home.event.howto': 'Cómo Canjear:',
       'home.event.howtoDesc': '¡Obtén cupón de $20 de descuento sin compra mínima, acumulable! Código: SALE20',
-      
+
       // Tipos de habitación
       'room.all': 'Todos',
       'room.kitchen': 'Cocina',
@@ -508,7 +508,7 @@ const languages = {
       'room.dining': 'Comedor',
       'room.entryway': 'Entrada',
       'room.whole': 'Casa Completa',
-      
+
       // Colores
       'color.white': 'Blanco',
       'color.black': 'Negro',
@@ -524,7 +524,7 @@ const languages = {
       'color.picker.selected': 'Seleccionado',
       'color.picker.cancel': 'Cancelar',
       'color.picker.add': 'Añadir al Filtro',
-      
+
       // Títulos de página
       'page.shop': 'Tienda',
       'page.designers': 'Diseñadores',
@@ -534,7 +534,7 @@ const languages = {
       'page.caseDetail': 'Detalle del Caso',
       'page.caseId': 'ID del Caso',
       'page.developing': 'Página en desarrollo...',
-      
+
       // Botones y acciones
       'action.like': 'Me Gusta',
       'action.favorite': 'Favorito',
@@ -555,7 +555,7 @@ const languages = {
       'common.copyright': '© 2025 Home Decor Platform. Todos los Derechos Reservados. Contáctanos: 1-800-XXX-XXXX',
       'common.loading': 'Cargando...',
       'common.logoutConfirm': '¿Estás seguro de que quieres cerrar sesión?',
-      
+
       // Registro
       'register.createAccount': 'Crea tu cuenta',
       'register.joinPlatform': 'Únete a nuestra plataforma como Cliente, Diseñador, Proveedor, Contratista o PM',
@@ -575,7 +575,7 @@ const languages = {
       'register.toLogin': 'Iniciar sesión',
       'register.success': 'Registro exitoso',
       'register.failed': 'Registro fallido',
-      
+
       // Roles
       'roles.user': 'Cliente',
       'roles.userDesc': 'Navega productos y ordena',
@@ -583,7 +583,7 @@ const languages = {
       'roles.designerDesc': 'Sube y vende tus diseños',
       'roles.supplier': 'Proveedor',
       'roles.supplierDesc': 'Ofrece productos en nuestro mercado',
-      
+
       // Diseñador específico
       'register.designerNature': 'Naturaleza del Diseñador',
       'register.individual': 'Individual',
@@ -602,7 +602,7 @@ const languages = {
       'register.entrance': 'Entrada',
       'register.kidsRoom': 'Habitación Infantil',
       'register.storage': 'Almacén',
-      
+
       // Validación
       'validation.emailRequired': 'Por favor ingresa el correo electrónico',
       'validation.passwordNotMatch': 'Las contraseñas no coinciden',
@@ -615,7 +615,7 @@ const languages = {
 export const createI18nPlugin = (): I18nPlugin => {
   // 使用 Vue 的响应式 ref
   const currentLocaleRef = ref(localStorage.getItem('user-web-locale') || 'zh')
-  
+
   const plugin: I18nPlugin = {
     get currentLocale() {
       return currentLocaleRef.value
@@ -624,49 +624,49 @@ export const createI18nPlugin = (): I18nPlugin => {
       currentLocaleRef.value = value
     },
     availableLocales: Object.keys(languages),
-    
+
     async switchLocale(locale: string) {
       if (languages[locale as keyof typeof languages]) {
         currentLocaleRef.value = locale
         localStorage.setItem('user-web-locale', locale)
-        
+
         // 触发全局事件
         window.dispatchEvent(new CustomEvent('user-web-language-changed', {
           detail: { locale }
         }))
-        
+
         console.log(`用户端语言切换到: ${locale}`)
       }
     },
-    
+
     t(key: string, params?: Record<string, any>): string {
       // 访问 ref.value 以建立响应式依赖
       const locale = currentLocaleRef.value
       const lang = languages[locale as keyof typeof languages]
       if (!lang) return key
-      
+
       let translation = lang.translations[key as keyof typeof lang.translations] || key
-      
+
       // 简单的参数替换
       if (params) {
         Object.keys(params).forEach(param => {
           translation = translation.replace(`{${param}}`, params[param])
         })
       }
-      
+
       return translation
     },
-    
+
     install(app: any) {
       // 提供全局属性 - 使用箭头函数保持this绑定
       app.config.globalProperties.$t = (key: string, params?: Record<string, any>) => this.t(key, params)
       app.config.globalProperties.$locale = () => this.currentLocale
-      
+
       // 提供注入
       app.provide('i18n', this)
     }
   }
-  
+
   return plugin
 }
 

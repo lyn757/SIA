@@ -180,6 +180,10 @@ const handleGuestAccess = async () => {
 </script>
 
 <style scoped>
+* {
+  letter-spacing: 0;
+}
+
 .login-container {
   min-height: 100vh;
   background: #f5f7fa;
@@ -188,6 +192,7 @@ const handleGuestAccess = async () => {
   justify-content: center;
   padding: 20px;
   position: relative;
+  letter-spacing: 0;
 }
 
 .language-toggle {

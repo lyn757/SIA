@@ -86,9 +86,9 @@
           />
         </el-form-item>
 
-        <!-- 设计师专属表单 -->
+        <!-- 设计师专属表单 - Designer Nature 模块 -->
         <div v-if="registerForm.role === 'designer'" class="designer-specific-section">
-          <div class="section-title">{{ $t('register.designerNature') }}</div>
+          <div class="section-title">Designer Nature</div>
           
           <el-form-item prop="designerType">
             <el-radio-group v-model="registerForm.designerType" size="large">
@@ -98,30 +98,33 @@
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item prop="designerName" class="required-field">
+          <el-form-item prop="designerName" class="required-field designer-name-field">
             <el-input 
               v-model="registerForm.designerName" 
-              :placeholder="$t('register.designerName')" 
+              placeholder="Designer / Company Name"
               size="large"
             />
           </el-form-item>
+        </div>
 
-          <div class="section-title">{{ $t('register.specializedRoomTypes') }}</div>
-          <div class="section-subtitle">{{ $t('register.specializedRoomTypesDesc') }}</div>
+        <!-- 设计师专属表单 - Specialized Room Types 模块 -->
+        <div v-if="registerForm.role === 'designer'" class="designer-specific-section">
+          <div class="section-title">Specialized Room Types</div>
+          <div class="section-subtitle">Select the room types you specialize in (multiple selections allowed)</div>
           
           <el-form-item prop="roomTypes">
             <div class="room-types-grid">
               <el-checkbox-group v-model="registerForm.roomTypes">
-                <el-checkbox label="living">{{ $t('register.livingRoom') }}</el-checkbox>
-                <el-checkbox label="bedroom">{{ $t('register.bedroom') }}</el-checkbox>
-                <el-checkbox label="kitchen">{{ $t('register.kitchen') }}</el-checkbox>
-                <el-checkbox label="bathroom">{{ $t('register.bathroom') }}</el-checkbox>
-                <el-checkbox label="dining">{{ $t('register.diningRoom') }}</el-checkbox>
-                <el-checkbox label="study">{{ $t('register.study') }}</el-checkbox>
-                <el-checkbox label="balcony">{{ $t('register.balcony') }}</el-checkbox>
-                <el-checkbox label="entrance">{{ $t('register.entrance') }}</el-checkbox>
-                <el-checkbox label="kids">{{ $t('register.kidsRoom') }}</el-checkbox>
-                <el-checkbox label="storage">{{ $t('register.storage') }}</el-checkbox>
+                <el-checkbox label="living">Living Room</el-checkbox>
+                <el-checkbox label="bedroom">Bedroom</el-checkbox>
+                <el-checkbox label="kitchen">Kitchen</el-checkbox>
+                <el-checkbox label="bathroom">Bathroom</el-checkbox>
+                <el-checkbox label="dining">Dining Room</el-checkbox>
+                <el-checkbox label="study">Study</el-checkbox>
+                <el-checkbox label="balcony">Balcony</el-checkbox>
+                <el-checkbox label="entrance">Entrance</el-checkbox>
+                <el-checkbox label="kids">Kids Room</el-checkbox>
+                <el-checkbox label="storage">Storage</el-checkbox>
               </el-checkbox-group>
             </div>
           </el-form-item>
@@ -387,6 +390,10 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
+* {
+  letter-spacing: 0;
+}
+
 .register-container {
   min-height: 100vh;
   background: #f5f7fa;
@@ -395,6 +402,7 @@ const handleRegister = async () => {
   justify-content: center;
   padding: 30px 20px;
   position: relative;
+  letter-spacing: 0;
 }
 
 .language-toggle {
@@ -477,7 +485,7 @@ const handleRegister = async () => {
   min-height: 7.875rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
 
@@ -509,7 +517,7 @@ const handleRegister = async () => {
 .role-icon-wrapper {
   width: 1.5rem;
   height: 1.5rem;
-  margin: 0 auto 16px;
+  margin: 0 auto 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -526,12 +534,13 @@ const handleRegister = async () => {
   font-weight: 700;
   color: #102129;
   margin-bottom: 8px;
+  line-height: 18px;
 }
 
 .role-desc {
   font-size: 13px;
   color: #909399;
-  line-height: 1.5;
+  line-height: 18px;
 }
 
 .form-row {
@@ -546,7 +555,7 @@ const handleRegister = async () => {
 }
 
 .register-form :deep(.el-form-item) {
-  margin-bottom: 16px;
+  margin-bottom: 6px;
 }
 
 .register-form :deep(.el-input__wrapper) {
@@ -566,6 +575,15 @@ const handleRegister = async () => {
 .register-form :deep(.el-input__inner::placeholder) {
   color: #c0c4cc;
   font-size: 13px;
+}
+
+/* 隐藏 Element Plus 默认的灰色星号 */
+.register-form :deep(.el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label::before) {
+  display: none;
+}
+
+.register-form :deep(.el-form-item.is-required .el-form-item__label::before) {
+  display: none;
 }
 
 /* 为必填输入框添加红色星号标记 */
@@ -645,6 +663,11 @@ const handleRegister = async () => {
 .agreement-item :deep(.el-link) {
   font-size: 12px;
   vertical-align: baseline;
+  color: #00699A;
+}
+
+.agreement-item :deep(.el-link:hover) {
+  color: #008bb8;
 }
 
 .login-link {
@@ -655,12 +678,17 @@ const handleRegister = async () => {
 
 .login-link :deep(.el-link) {
   font-size: 13px;
+  color: #00699A;
+}
+
+.login-link :deep(.el-link:hover) {
+  color: #008bb8;
 }
 
 .register-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 0;
   margin-top: 28px;
   padding-top: 20px;
   border-top: 1px solid #E5E6EB;
@@ -674,6 +702,7 @@ const handleRegister = async () => {
   border-radius: 4px;
   font-size: 14px;
   background: white;
+  margin-right: 12px;
 }
 
 .cancel-btn:hover {
@@ -691,6 +720,7 @@ const handleRegister = async () => {
   font-size: 14px;
   font-weight: 500;
   color: white;
+  margin-left: 0;
 }
 
 .register-btn:hover {
@@ -700,7 +730,7 @@ const handleRegister = async () => {
 
 .designer-specific-section {
   background: #f5f7fa;
-  padding: 20px;
+  padding: 14px;
   border-radius: 6px;
   margin: 20px 0;
   border: 1px solid #E5E6EB;
@@ -710,20 +740,57 @@ const handleRegister = async () => {
   font-size: 14px;
   font-weight: 600;
   color: #102129;
-  margin-bottom: 14px;
+  margin-bottom: 6px;
+  letter-spacing: 0;
+}
+
+.designer-name-field {
+  margin-bottom: 0;
 }
 
 .section-subtitle {
-  font-size: 12px;
+  font-size: 13px;
   color: #909399;
-  margin-bottom: 14px;
-  line-height: 1.5;
+  margin-top: 1rem;
+  margin-bottom: 0;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+
+.designer-specific-section :deep(.el-radio-group) {
+  display: flex;
+  gap: 24px;
+}
+
+.designer-specific-section :deep(.el-radio) {
+  margin-right: 0;
+}
+
+.designer-specific-section :deep(.el-radio__label) {
+  font-size: 14px;
+  color: #102129;
+  padding-left: 8px;
+  letter-spacing: 0;
+}
+
+.designer-specific-section :deep(.el-radio__input.is-checked .el-radio__inner) {
+  background-color: #00699A;
+  border-color: #00699A;
+}
+
+.designer-specific-section :deep(.el-radio__input.is-checked + .el-radio__label) {
+  color: #102129;
 }
 
 .room-types-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  gap: 0.5rem 12px;
+  margin-top: 1rem;
+}
+
+.room-types-grid :deep(.el-checkbox-group) {
+  display: contents;
 }
 
 .room-types-grid :deep(.el-checkbox) {
@@ -732,6 +799,17 @@ const handleRegister = async () => {
 
 .room-types-grid :deep(.el-checkbox__label) {
   font-size: 13px;
+  color: #102129;
+  padding-left: 8px;
+  letter-spacing: 0;
+}
+
+.room-types-grid :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+  background-color: #00699A;
+  border-color: #00699A;
+}
+
+.room-types-grid :deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
   color: #102129;
 }
 
@@ -743,6 +821,14 @@ const handleRegister = async () => {
   .role-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+  }
+  
+  .role-name {
+    line-height: 18px;
+  }
+  
+  .role-desc {
+    line-height: 18px;
   }
   
   .form-row {
@@ -759,8 +845,22 @@ const handleRegister = async () => {
     width: 100%;
   }
   
+  .cancel-btn {
+    margin-right: 0;
+    margin-top: 12px;
+  }
+  
+  .register-btn {
+    margin-left: 0;
+  }
+  
   .room-types-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .designer-specific-section :deep(.el-radio-group) {
+    flex-direction: column;
+    gap: 12px;
   }
 }
 

@@ -25,7 +25,7 @@ export default {
   
   // 登录
   login: {
-    title: '用户登录',
+    title: '登录您的账户',
     subtitle: '选择您的身份，开始使用我们的服务',
     emailLabel: '邮箱地址',
     passwordLabel: '密码',
@@ -48,7 +48,7 @@ export default {
   // 注册
   register: {
     title: '用户注册',
-    createAccount: '创建您的账户',
+    createAccount: '创建账户',
     joinPlatform: '加入我们的平台，成为用户、设计师、供应商、施工方或项目经理',
     subtitle: '加入我们的平台，成为用户、设计师、供应商或项目经理',
     email: '邮箱',

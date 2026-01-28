@@ -25,65 +25,82 @@
         </div>
       </div>
 
-      <!-- 注册表单 - 简化版 -->
-      <el-form ref="registerFormRef" :model="registerForm" :rules="registerRules" class="register-form">
+      <!-- 可滚动内容区域 -->
+      <div class="register-content-scroll">
+        <!-- 注册表单 - 简化版 -->
+        <el-form ref="registerFormRef" :model="registerForm" :rules="registerRules" class="register-form">
         <!-- 基础信息 - 两列布局 -->
         <div class="form-row">
-          <el-form-item prop="email" class="form-item-half required-field">
-            <el-input 
-              v-model="registerForm.email" 
-              :placeholder="$t('register.email')" 
-              size="large"
-            />
+          <el-form-item prop="email" class="form-item-half required-field floating-label-item">
+            <div class="floating-label-wrapper">
+              <el-input 
+                v-model="registerForm.email" 
+                placeholder=" "
+                size="large"
+              />
+              <label class="floating-label">{{ $t('register.email') }}</label>
+            </div>
           </el-form-item>
           
-          <el-form-item prop="password" class="form-item-half required-field">
-            <el-input 
-              v-model="registerForm.password" 
-              type="password" 
-              :placeholder="$t('register.password')" 
-              size="large" 
-              show-password 
-            />
+          <el-form-item prop="password" class="form-item-half required-field floating-label-item">
+            <div class="floating-label-wrapper">
+              <el-input 
+                v-model="registerForm.password" 
+                type="password" 
+                placeholder=" "
+                size="large" 
+                show-password 
+              />
+              <label class="floating-label">{{ $t('register.password') }}</label>
+            </div>
           </el-form-item>
         </div>
 
         <div class="form-row">
-          <el-form-item prop="emailCode" class="form-item-half required-field">
-            <div class="code-wrapper">
-              <el-input 
-                v-model="registerForm.emailCode" 
-                :placeholder="$t('register.emailCode')" 
-                size="large"
-              />
-              <el-button 
-                type="text" 
-                :disabled="emailCodeDisabled" 
-                @click="sendEmailCode" 
-                class="code-link"
-              >
-                {{ emailCodeText }}
-              </el-button>
+          <el-form-item prop="emailCode" class="form-item-half required-field floating-label-item">
+            <div class="floating-label-wrapper">
+              <div class="code-wrapper">
+                <el-input 
+                  v-model="registerForm.emailCode" 
+                  placeholder=" "
+                  size="large"
+                />
+                <el-button 
+                  type="text" 
+                  :disabled="emailCodeDisabled" 
+                  @click="sendEmailCode" 
+                  class="code-link"
+                >
+                  {{ emailCodeText }}
+                </el-button>
+              </div>
+              <label class="floating-label">{{ $t('register.emailCode') }}</label>
             </div>
           </el-form-item>
 
-          <el-form-item prop="confirmPassword" class="form-item-half required-field">
-            <el-input 
-              v-model="registerForm.confirmPassword" 
-              type="password" 
-              :placeholder="$t('register.confirmPassword')" 
-              size="large" 
-              show-password 
-            />
+          <el-form-item prop="confirmPassword" class="form-item-half required-field floating-label-item">
+            <div class="floating-label-wrapper">
+              <el-input 
+                v-model="registerForm.confirmPassword" 
+                type="password" 
+                placeholder=" "
+                size="large" 
+                show-password 
+              />
+              <label class="floating-label">{{ $t('register.confirmPassword') }}</label>
+            </div>
           </el-form-item>
         </div>
 
-        <el-form-item prop="phone">
-          <el-input 
-            v-model="registerForm.phone" 
-            :placeholder="$t('register.phone')" 
-            size="large"
-          />
+        <el-form-item prop="phone" class="floating-label-item">
+          <div class="floating-label-wrapper">
+            <el-input 
+              v-model="registerForm.phone" 
+              placeholder=" "
+              size="large"
+            />
+            <label class="floating-label">{{ $t('register.phone') }}</label>
+          </div>
         </el-form-item>
 
         <!-- 设计师专属表单 - Designer Nature 模块 -->
@@ -98,12 +115,15 @@
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item prop="designerName" class="required-field designer-name-field">
-            <el-input 
-              v-model="registerForm.designerName" 
-              placeholder="Designer / Company Name"
-              size="large"
-            />
+          <el-form-item prop="designerName" class="required-field designer-name-field floating-label-item">
+            <div class="floating-label-wrapper">
+              <el-input 
+                v-model="registerForm.designerName" 
+                placeholder=" "
+                size="large"
+              />
+              <label class="floating-label">Designer / Company Name</label>
+            </div>
           </el-form-item>
         </div>
 
@@ -130,6 +150,144 @@
           </el-form-item>
         </div>
 
+        <!-- 供应商专属表单 - Company Information 模块 -->
+        <div v-if="registerForm.role === 'supplier'" class="supplier-specific-section">
+          <div class="section-title">Company Information</div>
+          
+          <div class="form-row">
+            <el-form-item prop="companyName" class="form-item-half required-field floating-label-item">
+              <div class="floating-label-wrapper">
+                <el-input 
+                  v-model="registerForm.companyName" 
+                  placeholder=" "
+                  size="large"
+                />
+                <label class="floating-label">Company Name</label>
+              </div>
+            </el-form-item>
+
+            <el-form-item prop="contactPerson" class="form-item-half required-field floating-label-item">
+              <div class="floating-label-wrapper">
+                <el-input 
+                  v-model="registerForm.contactPerson" 
+                  placeholder=" "
+                  size="large"
+                />
+                <label class="floating-label">Contact Person</label>
+              </div>
+            </el-form-item>
+          </div>
+
+          <el-form-item prop="contactPhone" class="required-field floating-label-item">
+            <div class="floating-label-wrapper">
+              <el-input 
+                v-model="registerForm.contactPhone" 
+                placeholder=" "
+                size="large"
+              />
+              <label class="floating-label">Contact Phone</label>
+            </div>
+          </el-form-item>
+        </div>
+
+        <!-- 供应商专属表单 - Company Address 模块 -->
+        <div v-if="registerForm.role === 'supplier'" class="supplier-specific-section">
+          <div class="section-title">Company Address</div>
+          
+          <div class="form-row">
+            <el-form-item prop="companyAddress" class="form-item-half required-field floating-label-item">
+              <div class="floating-label-wrapper">
+                <el-input 
+                  v-model="registerForm.companyAddress" 
+                  placeholder=" "
+                  size="large"
+                />
+                <label class="floating-label">Street Address</label>
+              </div>
+            </el-form-item>
+
+            <el-form-item prop="street" class="form-item-half floating-label-item">
+              <div class="floating-label-wrapper">
+                <el-input 
+                  v-model="registerForm.street" 
+                  placeholder=" "
+                  size="large"
+                />
+                <label class="floating-label">Apartment, Suite, Floor, etc</label>
+              </div>
+            </el-form-item>
+          </div>
+
+          <div class="form-row">
+            <el-form-item prop="city" class="form-item-half required-field floating-label-item">
+              <div class="floating-label-wrapper">
+                <el-input 
+                  v-model="registerForm.city" 
+                  placeholder=" "
+                  size="large"
+                />
+                <label class="floating-label">City</label>
+              </div>
+            </el-form-item>
+
+            <el-form-item prop="district" class="form-item-half required-field floating-label-item">
+              <div class="floating-label-wrapper">
+                <el-input 
+                  v-model="registerForm.district" 
+                  placeholder=" "
+                  size="large"
+                />
+                <label class="floating-label">State / Province</label>
+              </div>
+            </el-form-item>
+          </div>
+
+          <div class="form-row">
+            <el-form-item prop="zipCode" class="form-item-half required-field floating-label-item">
+              <div class="floating-label-wrapper">
+                <el-input 
+                  v-model="registerForm.zipCode" 
+                  placeholder=" "
+                  size="large"
+                />
+                <label class="floating-label">Postal Code</label>
+              </div>
+            </el-form-item>
+
+            <el-form-item prop="businessScope" class="form-item-half required-field floating-label-item">
+              <div class="floating-label-wrapper">
+                <el-input 
+                  v-model="registerForm.businessScope" 
+                  placeholder=" "
+                  size="large"
+                />
+                <label class="floating-label">Country</label>
+              </div>
+            </el-form-item>
+          </div>
+        </div>
+
+        <!-- 供应商专属表单 - Building Materials Category 模块 -->
+        <div v-if="registerForm.role === 'supplier'" class="supplier-specific-section">
+          <div class="section-title">Building Materials Category</div>
+          
+          <el-form-item prop="businessCategories">
+            <div class="business-categories-grid">
+              <el-checkbox-group v-model="registerForm.businessCategories">
+                <el-checkbox label="tiles">Tiles</el-checkbox>
+                <el-checkbox label="flooring">Flooring</el-checkbox>
+                <el-checkbox label="bathroom">Bathroom</el-checkbox>
+                <el-checkbox label="cabinets">Cabinets</el-checkbox>
+                <el-checkbox label="doors">Doors & Windows</el-checkbox>
+                <el-checkbox label="paint">Paint</el-checkbox>
+                <el-checkbox label="lighting">Lighting</el-checkbox>
+                <el-checkbox label="hardware">Hardware</el-checkbox>
+                <el-checkbox label="others">Others</el-checkbox>
+              </el-checkbox-group>
+            </div>
+          </el-form-item>
+        </div>
+
         <el-form-item prop="agreement" class="agreement-item">
           <el-checkbox v-model="registerForm.agreement">
             {{ $t('register.agreePrefix') }}
@@ -144,9 +302,12 @@
           <el-link type="primary" @click="$router.push('/login')">{{ $t('register.toLogin') }}</el-link>
         </div>
       </el-form>
+      </div>
+      <!-- 结束可滚动内容区域 -->
       
+      <!-- 固定底部按钮区域 -->
       <div class="register-footer">
-        <el-button size="large" class="cancel-btn" @click="$router.push('/login')">
+        <el-button size="large" class="cancel-btn" @click="handleCancel">
           {{ $t('common.cancel') }}
         </el-button>
         <el-button type="primary" size="large" :loading="loading" class="register-btn" @click="handleRegister">
@@ -232,9 +393,47 @@ watch(() => roleStore.selectedRole, (newRole) => {
   }
 })
 
-// 监听表单角色变化，同步到 store
-watch(() => registerForm.role, (newRole) => {
+// 监听表单角色变化，同步到 store 并清空角色专属数据
+watch(() => registerForm.role, (newRole, oldRole) => {
   roleStore.setRole(newRole)
+  
+  // 切换角色时清空角色专属数据
+  if (oldRole && newRole !== oldRole) {
+    // 只清除空输入框的验证错误
+    // 对于有内容的输入框，保留验证错误状态
+    if (registerFormRef.value) {
+      // 检查每个公共字段，只清除空字段的验证
+      const fieldsToCheck = ['email', 'password', 'confirmPassword', 'emailCode', 'phone']
+      fieldsToCheck.forEach(field => {
+        const value = registerForm[field as keyof typeof registerForm]
+        if (!value || value === '') {
+          registerFormRef.value?.clearValidate(field)
+        }
+      })
+    }
+    
+    // 清空设计师专属数据
+    if (oldRole === 'designer') {
+      registerForm.designerType = 'individual'
+      registerForm.designerName = ''
+      registerForm.roomTypes = []
+    }
+    
+    // 清空供应商专属数据
+    if (oldRole === 'supplier') {
+      registerForm.companyName = ''
+      registerForm.contactPerson = ''
+      registerForm.contactPhone = ''
+      registerForm.companyAddress = ''
+      registerForm.businessScope = ''
+      registerForm.city = ''
+      registerForm.district = ''
+      registerForm.street = ''
+      registerForm.zipCode = ''
+      registerForm.businessCategories = []
+      registerForm.introduction = ''
+    }
+  }
 })
 
 // 邮箱验证码按钮文本
@@ -368,6 +567,44 @@ const showPrivacy = () => {
   })
 }
 
+// 清除所有表单信息
+const clearForm = () => {
+  // 清空表单数据
+  registerForm.email = ''
+  registerForm.password = ''
+  registerForm.confirmPassword = ''
+  registerForm.emailCode = ''
+  registerForm.phone = ''
+  registerForm.agreement = false
+  
+  // 清空设计师专属数据
+  registerForm.designerType = 'individual'
+  registerForm.designerName = ''
+  registerForm.roomTypes = []
+  
+  // 清空供应商专属数据
+  registerForm.companyName = ''
+  registerForm.contactPerson = ''
+  registerForm.contactPhone = ''
+  registerForm.companyAddress = ''
+  registerForm.businessScope = ''
+  registerForm.city = ''
+  registerForm.district = ''
+  registerForm.street = ''
+  registerForm.zipCode = ''
+  registerForm.businessCategories = []
+  registerForm.introduction = ''
+  
+  // 清除验证错误
+  registerFormRef.value?.clearValidate()
+}
+
+// 处理取消按钮
+const handleCancel = () => {
+  clearForm()
+  router.push('/login')
+}
+
 // 处理注册
 const handleRegister = async () => {
   if (!registerFormRef.value) return
@@ -379,6 +616,10 @@ const handleRegister = async () => {
     await registerApi(registerForm)
     
     ElMessage.success(t('register.success'))
+    
+    // 清除表单信息
+    clearForm()
+    
     router.push('/login')
     
   } catch (error: any) {
@@ -415,11 +656,43 @@ const handleRegister = async () => {
 .register-card {
   width: 100%;
   max-width: 60rem;
+  max-height: 90vh;
   background: white;
   border-radius: 8px;
-  padding: 40px 50px 50px;
+  padding: 1.5rem 2rem;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 可滚动内容区域 */
+.register-content-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0 -2rem;
+  padding: 1rem 2rem 0;
+  min-height: 0;
+}
+
+/* 自定义滚动条样式 */
+.register-content-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.register-content-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.register-content-scroll::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.register-content-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 
 .register-header {
@@ -431,9 +704,12 @@ const handleRegister = async () => {
 }
 
 .register-header h1 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #102129;
+  font-family: Inter, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.75rem;
+  letter-spacing: 0;
+  color: #1D2129;
   margin: 0;
   text-align: center;
 }
@@ -460,8 +736,12 @@ const handleRegister = async () => {
 }
 
 .register-subtitle {
-  color: #909399;
-  font-size: 13px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  letter-spacing: 0;
+  color: #1D2129;
   margin-top: 3%;
   margin-bottom: 2%;
   text-align: center;
@@ -471,7 +751,7 @@ const handleRegister = async () => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 .role-card {
@@ -549,15 +829,6 @@ const handleRegister = async () => {
   margin-bottom: 0;
 }
 
-.form-item-half {
-  flex: 1;
-  margin-bottom: 16px;
-}
-
-.register-form :deep(.el-form-item) {
-  margin-bottom: 6px;
-}
-
 .register-form :deep(.el-input__wrapper) {
   border-radius: 4px;
   box-shadow: 0 0 0 1px #E5E6EB inset;
@@ -566,15 +837,98 @@ const handleRegister = async () => {
 }
 
 .register-form :deep(.el-input__inner) {
-  font-size: 14px;
-  color: #102129;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  letter-spacing: 0;
+  color: #1D2129;
   height: 38px;
-  line-height: 38px;
 }
 
 .register-form :deep(.el-input__inner::placeholder) {
-  color: #c0c4cc;
-  font-size: 13px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  letter-spacing: 0;
+  color: #5C5C5C;
+}
+
+/* 浮动标签容器 */
+.floating-label-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* 浮动标签样式 */
+.floating-label {
+  position: absolute;
+  left: 0.9375rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  letter-spacing: 0;
+  color: #5C5C5C;
+  padding: 0 0.25rem;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 2;
+  background: transparent;
+}
+
+/* 使用伪元素遮盖边框 - 默认隐藏 */
+.floating-label::after {
+  content: '';
+  position: absolute;
+  left: -0.125rem;
+  right: -0.125rem;
+  top: 50%;
+  height: 0.125rem;
+  background: white;
+  transform: translateY(-50%);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* 当输入框有内容或获得焦点时，标签上移并缩小 */
+.floating-label-wrapper:has(.el-input__inner:not(:placeholder-shown)) .floating-label,
+.floating-label-wrapper:has(.el-input__inner:focus) .floating-label,
+.floating-label-wrapper:focus-within .floating-label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #5C5C5C;
+}
+
+/* 浮动状态下显示伪元素遮盖边框 */
+.floating-label-wrapper:has(.el-input__inner:not(:placeholder-shown)) .floating-label::after,
+.floating-label-wrapper:has(.el-input__inner:focus) .floating-label::after,
+.floating-label-wrapper:focus-within .floating-label::after {
+  opacity: 1;
+}
+
+/* 设计师专属区域的浮动标签伪元素使用灰色背景 */
+.designer-specific-section .floating-label::after {
+  background: #f5f7fa;
+}
+
+/* 必填字段的浮动标签 - 星号在文字前面 */
+.floating-label-item.required-field .floating-label::before {
+  content: '*';
+  color: #f56c6c;
+  margin-right: 0.125rem;
+}
+
+/* 确保输入框包装器的z-index较低 */
+.floating-label-wrapper :deep(.el-input__wrapper) {
+  position: relative;
+  z-index: 1;
 }
 
 /* 隐藏 Element Plus 默认的灰色星号 */
@@ -586,8 +940,31 @@ const handleRegister = async () => {
   display: none;
 }
 
-/* 为必填输入框添加红色星号标记 */
-.register-form :deep(.required-field .el-input__wrapper::before) {
+/* 隐藏所有错误提示文字 - 改用红色边框和抖动动画 */
+.register-form :deep(.el-form-item__error) {
+  display: none;
+}
+
+/* 确保表单项有相对定位，作为错误提示的定位参考 */
+.register-form :deep(.el-form-item) {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+/* 两列布局的表单项使用较小的底部边距 */
+.form-item-half {
+  flex: 1;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+/* 确保浮动标签的表单项错误提示正确显示 */
+.floating-label-item :deep(.el-form-item__error) {
+  z-index: 10;
+}
+
+/* 为必填输入框添加红色星号标记 - 仅用于非浮动标签的输入框 */
+.register-form :deep(.required-field:not(.floating-label-item) .el-input__wrapper::before) {
   content: '*';
   position: absolute;
   left: 12px;
@@ -599,16 +976,48 @@ const handleRegister = async () => {
   pointer-events: none;
 }
 
-.register-form :deep(.required-field .el-input__inner) {
+.register-form :deep(.required-field:not(.floating-label-item) .el-input__inner) {
   padding-left: 4px;
 }
 
 .register-form :deep(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #c0c4cc inset;
+  box-shadow: 0 0 0 1px #E5E6EB inset;
 }
 
 .register-form :deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 1px #00699A inset;
+  box-shadow: 0 0 0 1px #E5E6EB inset;
+}
+
+/* 错误状态：红色边框 */
+.register-form :deep(.el-form-item.is-error .el-input__wrapper) {
+  box-shadow: 0 0 0 1px #f56c6c inset !important;
+}
+
+.register-form :deep(.el-form-item.is-error .el-textarea__inner) {
+  box-shadow: 0 0 0 1px #f56c6c inset !important;
+}
+
+.register-form :deep(.el-form-item.is-error .el-checkbox__inner) {
+  border-color: #f56c6c;
+}
+
+/* 抖动动画 */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+.register-form :deep(.el-form-item.is-error .el-input__wrapper),
+.register-form :deep(.el-form-item.is-error .el-textarea__inner),
+.register-form :deep(.el-form-item.is-error .el-checkbox) {
+  animation: shake 0.5s;
 }
 
 .code-wrapper {
@@ -650,18 +1059,34 @@ const handleRegister = async () => {
 }
 
 .agreement-item {
-  margin-top: 12px;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 0 !important;
+}
+
+.agreement-item :deep(.el-form-item__content) {
+  margin-bottom: 0 !important;
+}
+
+/* 协议复选框隐藏错误提示文字 */
+.agreement-item :deep(.el-form-item__error) {
+  display: none;
 }
 
 .agreement-item :deep(.el-checkbox__label) {
-  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  letter-spacing: 0;
   color: #102129;
-  line-height: 1.6;
 }
 
 .agreement-item :deep(.el-link) {
-  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  letter-spacing: 0;
   vertical-align: baseline;
   color: #00699A;
 }
@@ -671,13 +1096,23 @@ const handleRegister = async () => {
 }
 
 .login-link {
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  letter-spacing: 0;
   color: #102129;
-  font-size: 13px;
+  margin-top: 1.5rem;
   margin-bottom: 20px;
 }
 
 .login-link :deep(.el-link) {
-  font-size: 13px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  letter-spacing: 0;
+  vertical-align: baseline;
   color: #00699A;
 }
 
@@ -687,22 +1122,26 @@ const handleRegister = async () => {
 
 .register-footer {
   display: flex;
+  flex-direction: row;
   justify-content: flex-end;
-  gap: 0;
-  margin-top: 28px;
-  padding-top: 20px;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1.25rem;
   border-top: 1px solid #E5E6EB;
+  flex-shrink: 0;
 }
 
 .cancel-btn {
   min-width: 100px;
-  height: 40px;
+  height: 2rem;
   border: 1px solid #E5E6EB;
   color: #102129;
   border-radius: 4px;
-  font-size: 14px;
+  font-family: Inter, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.375rem;
   background: white;
-  margin-right: 12px;
 }
 
 .cancel-btn:hover {
@@ -713,14 +1152,15 @@ const handleRegister = async () => {
 
 .register-btn {
   min-width: 140px;
-  height: 40px;
+  height: 2rem;
   background: #333333;
   border-color: #333333;
   border-radius: 4px;
-  font-size: 14px;
-  font-weight: 500;
+  font-family: Inter, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.375rem;
   color: white;
-  margin-left: 0;
 }
 
 .register-btn:hover {
@@ -734,6 +1174,32 @@ const handleRegister = async () => {
   border-radius: 6px;
   margin: 20px 0;
   border: 1px solid #E5E6EB;
+}
+
+.supplier-specific-section {
+  background: #f5f7fa;
+  padding: 14px;
+  border-radius: 6px;
+  margin: 20px 0;
+  border: 1px solid #E5E6EB;
+}
+
+.supplier-specific-section :deep(.el-form-item) {
+  margin-bottom: 0;
+}
+
+/* 供应商专属区域隐藏错误提示文字 */
+.supplier-specific-section :deep(.el-form-item__error) {
+  display: none;
+}
+
+/* 供应商专属区域的两列布局表单项底部外边距 */
+.supplier-specific-section .form-row {
+  margin-bottom: 0.5rem;
+}
+
+.supplier-specific-section .form-item-half {
+  margin-bottom: 0;
 }
 
 .section-title {
@@ -751,10 +1217,19 @@ const handleRegister = async () => {
 .section-subtitle {
   font-size: 13px;
   color: #909399;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   margin-bottom: 0;
   line-height: 18px;
   letter-spacing: 0;
+}
+
+.designer-specific-section :deep(.el-form-item) {
+  margin-bottom: 0;
+}
+
+/* 设计师专属区域隐藏错误提示文字 */
+.designer-specific-section :deep(.el-form-item__error) {
+  display: none;
 }
 
 .designer-specific-section :deep(.el-radio-group) {
@@ -785,23 +1260,30 @@ const handleRegister = async () => {
 .room-types-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem 12px;
-  margin-top: 1rem;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
+  margin-top: 0.5rem;
+  width: 100%;
 }
 
 .room-types-grid :deep(.el-checkbox-group) {
-  display: contents;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  width: 100%;
 }
 
 .room-types-grid :deep(.el-checkbox) {
   margin-right: 0;
+  width: 100%;
 }
 
 .room-types-grid :deep(.el-checkbox__label) {
-  font-size: 13px;
-  color: #102129;
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.9);
   padding-left: 8px;
   letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .room-types-grid :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
@@ -810,7 +1292,51 @@ const handleRegister = async () => {
 }
 
 .room-types-grid :deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
-  color: #102129;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* 供应商业务类别网格 */
+.business-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.business-categories-grid :deep(.el-checkbox-group) {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.business-categories-grid :deep(.el-checkbox) {
+  margin-right: 0;
+  width: 100%;
+}
+
+.business-categories-grid :deep(.el-checkbox__label) {
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.9);
+  padding-left: 8px;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.business-categories-grid :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+  background-color: #00699A;
+  border-color: #00699A;
+}
+
+.business-categories-grid :deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* 供应商专属区域的浮动标签使用灰色背景 */
+.supplier-specific-section .floating-label::after {
+  background: #f5f7fa;
 }
 
 @media (max-width: 768px) {

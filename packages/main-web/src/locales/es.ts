@@ -25,21 +25,21 @@ export default {
   
   // Iniciar sesión
   login: {
-    title: 'Iniciar Sesión',
+    title: 'Inicia sesión en tu cuenta',
     subtitle: 'Elige tu identidad para comenzar a usar nuestros servicios',
     emailLabel: 'Dirección de Correo',
     passwordLabel: 'Contraseña',
     usernamePlaceholder: 'Por favor ingresa usuario o correo',
     emailPlaceholder: 'Ingresa correo',
     passwordPlaceholder: 'Ingresa contraseña',
-    submit: 'Iniciar Sesión',
+    submit: 'INICIAR SESIÓN',
     success: 'Inicio de sesión exitoso',
     failed: 'Error al iniciar sesión',
-    noAccount: '¿No tienes cuenta?',
-    toRegister: 'Registrar nueva cuenta',
-    registerNow: 'Registrarse ahora',
+    noAccount: '¿Aún no tienes una cuenta?',
+    toRegister: 'Registrar una nueva cuenta',
+    registerNow: 'Regístrate Ahora',
     forgotPassword: '¿Olvidaste tu contraseña?',
-    orLoginWith: 'O continúa con',
+    orLoginWith: 'O continúa a través de los siguientes métodos',
     guestAccess: 'Acceder como Invitado',
     guestAccessSuccess: 'Inicio de sesión de invitado exitoso',
     guestAccessFailed: 'Inicio de sesión de invitado fallido'
@@ -48,7 +48,7 @@ export default {
   // Registro
   register: {
     title: 'Registro de Usuario',
-    createAccount: 'Crea Tu Cuenta',
+    createAccount: 'Crear Cuenta',
     joinPlatform: 'Únete a nuestra plataforma como usuario, diseñador, proveedor, contratista o gerente de proyecto',
     subtitle: 'Únete a nuestra plataforma como usuario, diseñador, proveedor o gerente de proyecto',
     email: 'Correo Electrónico',

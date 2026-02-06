@@ -1,0 +1,1 @@
+import{_ as s}from"./index-56Xj_KMD.js";import{c as a,o as r,a as o}from"./vue-vendor-ChOrPdiX.js";const t={},c={class:"supplier-dashboard"};function n(d,e){return r(),a("div",c,[...e[0]||(e[0]=[o("h1",null,"供应商工作台",-1),o("p",null,"这里是供应商管理系统的主页",-1)])])}const p=s(t,[["render",n],["__scopeId","data-v-9ea18447"]]);export{p as default};

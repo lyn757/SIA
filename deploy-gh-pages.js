@@ -139,7 +139,7 @@ try {
   execSync('git add .', { stdio: 'inherit' });
   execSync('git commit -m "Deploy to GitHub Pages"', { stdio: 'inherit' });
   execSync('git branch -M gh-pages', { stdio: 'inherit' });
-  execSync('git remote add origin https://github.com/Rich-Radiant-Studio/SIA.git', { stdio: 'inherit' });
+  execSync('git remote add origin https://github.com/lyn757/SIA.git', { stdio: 'inherit' });
   execSync('git push -f origin gh-pages', { stdio: 'inherit' });
   
   process.chdir('..');

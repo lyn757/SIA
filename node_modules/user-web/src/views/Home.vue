@@ -42,7 +42,8 @@
     <div class="main-content-wrapper">
       <div class="content-container">
         <!-- Left Sidebar Menu -->
-        <aside class="sidebar-menu">
+        <aside class="sidebar-menu" ref="sidebarRef">
+          <div class="sidebar-content" ref="sidebarContentRef">
           <!-- Style Filter -->
           <div class="filter-section">
             <h6 class="filter-title">Style Filter</h6>
@@ -172,6 +173,7 @@
                 <span>User Reviews</span>
               </label>
             </div>
+          </div>
           </div>
         </aside>
 
@@ -363,8 +365,8 @@
                 </div>
               </div>
 
-              <!-- Promotional Banner (after every 4 products) -->
-              <div v-if="(index + 1) % 4 === 0" class="promo-banner">
+              <!-- Promotional Banner (only after 4th product) -->
+              <div v-if="index === 3" class="promo-banner">
                 <div class="promo-content">
                   <div class="promo-image">
                     <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&h=300&fit=crop&q=80" alt="Promo">
@@ -384,7 +386,7 @@
                 </div>
                 <!-- 装饰图案 -->
                 <div class="promo-decoration">
-                  <img :src="spriteImage" alt="decoration" class="promo-sprite-img" />
+                  <img :src="couponImage" alt="decoration" class="promo-sprite-img" />
                 </div>
               </div>
             </template>
@@ -407,12 +409,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, onMounted, computed, getCurrentInstance } from 'vue'
+import { ref, inject, onMounted, onBeforeUnmount, computed, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import type { I18nPlugin } from '@/plugins/i18n'
 import spriteImage from '@/assets/images/sprites/sprite.png'
+import couponImage from '@/assets/images/sprites/coupon.png'
 
 const router = useRouter()
 const i18n = inject<I18nPlugin>('i18n')
@@ -420,6 +423,9 @@ const instance = getCurrentInstance()
 
 const currentLanguage = ref(i18n?.currentLocale || 'zh')
 const componentKey = ref(0)
+const sidebarRef = ref<HTMLElement | null>(null)
+const sidebarContentRef = ref<HTMLElement | null>(null)
+const isSticky = ref(false)
 
 const $t = (key: string) => {
   const _ = currentLanguage.value
@@ -432,6 +438,73 @@ onMounted(() => {
     componentKey.value++
     instance?.proxy?.$forceUpdate()
   })
+
+  // 监听滚动事件
+  window.addEventListener('scroll', handleScroll)
+})
+
+// 处理滚动事件
+const handleScroll = () => {
+  if (!sidebarRef.value || !sidebarContentRef.value) return
+
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  const viewportHeight = window.innerHeight
+  const headerHeight = 104 // 顶部导航栏高度（40px + 64px）
+
+  // 获取侧边栏容器和内容的位置信息
+  const sidebarRect = sidebarRef.value.getBoundingClientRect()
+  const sidebarTop = sidebarRect.top + scrollTop
+  const sidebarBottom = sidebarRect.bottom + scrollTop
+  const contentHeight = sidebarContentRef.value.scrollHeight
+
+  // 计算触发粘性的临界点（内容底部到达视口底部）
+  const triggerPoint = contentHeight - viewportHeight + sidebarTop + headerHeight
+  
+  // 计算菜单栏应该停止固定的点（容器底部）
+  const stopPoint = sidebarBottom - viewportHeight + headerHeight
+
+  // 判断是否应该固定
+  if (scrollTop >= triggerPoint && scrollTop < stopPoint) {
+    // 固定状态
+    if (!isSticky.value) {
+      isSticky.value = true
+      sidebarContentRef.value.style.position = 'fixed'
+      sidebarContentRef.value.style.top = `${headerHeight}px`
+      sidebarContentRef.value.style.left = '0'
+      sidebarContentRef.value.style.width = `${sidebarRef.value.offsetWidth}px`
+      sidebarContentRef.value.style.zIndex = '99'
+      sidebarContentRef.value.classList.add('sticky-scrollable')
+    }
+  } else if (scrollTop >= stopPoint) {
+    // 到达容器底部，绝对定位在底部
+    if (isSticky.value) {
+      isSticky.value = false
+    }
+    sidebarContentRef.value.style.position = 'absolute'
+    sidebarContentRef.value.style.top = 'auto'
+    sidebarContentRef.value.style.bottom = '0'
+    sidebarContentRef.value.style.left = '0'
+    sidebarContentRef.value.style.width = `${sidebarRef.value.offsetWidth}px`
+    sidebarContentRef.value.style.zIndex = '99'
+    sidebarContentRef.value.classList.add('sticky-scrollable')
+  } else {
+    // 正常状态
+    if (isSticky.value) {
+      isSticky.value = false
+    }
+    sidebarContentRef.value.style.position = ''
+    sidebarContentRef.value.style.top = ''
+    sidebarContentRef.value.style.bottom = ''
+    sidebarContentRef.value.style.left = ''
+    sidebarContentRef.value.style.width = ''
+    sidebarContentRef.value.style.zIndex = ''
+    sidebarContentRef.value.classList.remove('sticky-scrollable')
+  }
+}
+
+// 清理事件监听器
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll)
 })
 
 // Filter states
@@ -542,6 +615,60 @@ const baseProducts = [
     image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&h=600&fit=crop&q=80',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer6',
     views: '945'
+  },
+  {
+    id: 7,
+    title: 'Modern luxury living space design',
+    price: 1899,
+    description: 'Contemporary design with premium materials and sophisticated aesthetics',
+    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop&q=80',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer7',
+    views: '3.2k',
+    likes: '980',
+    favorites: '654',
+    shares: '45',
+    cart: '18'
+  },
+  {
+    id: 8,
+    title: 'Scandinavian style bedroom suite',
+    price: 2199,
+    originalPrice: 2800,
+    discount: 21,
+    description: 'Clean lines and natural materials create a peaceful retreat',
+    image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=800&h=600&fit=crop&q=80',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer8',
+    views: '4.5k',
+    likes: '1.5K',
+    favorites: '892',
+    shares: '67',
+    cart: '25'
+  },
+  {
+    id: 9,
+    title: 'Industrial chic loft design',
+    price: 1599,
+    description: 'Raw materials and exposed elements for urban living',
+    image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&h=600&fit=crop&q=80',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer9',
+    views: '2.8k',
+    likes: '876',
+    favorites: '543',
+    shares: '34',
+    cart: '15'
+  },
+  {
+    id: 10,
+    title: 'Coastal inspired living room',
+    price: 1750,
+    description: 'Light and airy design with ocean-inspired color palette',
+    image: 'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=800&h=600&fit=crop&q=80',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer10',
+    views: '3.6k',
+    likes: '1.1K',
+    favorites: '721',
+    shares: '52',
+    cart: '20'
   }
 ]
 
@@ -557,6 +684,12 @@ const products = computed(() =>
 </script>
 
 <style scoped>
+/* 页面整体最小宽度设置 */
+.home-page {
+  min-width: 1200px;
+  overflow-x: auto;
+}
+
 /* Top Navigation Bar - Part 1 */
 .top-nav-bar {
   background: #333333;
@@ -660,6 +793,8 @@ const products = computed(() =>
   padding: 0;
   width: 100%;
   background: #F4F4F4; /* 整体背景色 */
+  min-width: 1200px; /* 设置最小宽度，防止过度挤压 */
+  overflow-x: auto; /* 小于最小宽度时允许横向滚动 */
 }
 
 .content-container {
@@ -672,12 +807,35 @@ const products = computed(() =>
 /* Sidebar Menu */
 .sidebar-menu {
   width: 12.5rem; /* 200px */
-  background: #F4F4F4; /* 背景色改为 #F4F4F4 */
-  border-right: none; /* 移除右边框 */
-  padding: 1.5rem 1rem;
+  background: #F4F4F4;
+  border-right: none;
+  padding: 0;
   min-height: 100%;
   flex-shrink: 0;
   box-sizing: border-box;
+  position: relative; /* 添加相对定位，让子元素的绝对定位相对于它 */
+}
+
+.sidebar-content {
+  width: 100%;
+  padding: 1.5rem 1rem;
+  transition: none;
+  box-sizing: border-box;
+  background: #F4F4F4;
+}
+
+.sidebar-content.sticky-scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100vh - 6.5rem);
+  /* 隐藏滚动条但保持可滚动 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* 隐藏 Webkit 浏览器的滚动条 */
+.sidebar-content.sticky-scrollable::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-section {
@@ -1138,9 +1296,11 @@ const products = computed(() =>
   gap: 1rem; /* 16px */
   padding: 1.5rem; /* 24px */
   background: #FFFFFF; /* 白色背景 */
+  min-width: 0; /* 允许网格项收缩 */
 }
 
 .product-card {
+  min-width: 0; /* 允许卡片收缩 */
   background: white;
   border: 0.0625rem solid #E5E6E8; /* 1px */
   border-radius: 0.25rem; /* 4px */
@@ -1415,6 +1575,7 @@ const products = computed(() =>
   overflow: hidden; /* 改回hidden */
   box-shadow: 0 0.25rem 0.75rem rgba(139, 44, 0, 0.3); /* 0 4px 12px */
   width: 100%; /* 铺满容器 */
+  min-width: 0; /* 允许收缩 */
   position: relative; /* 为装饰图案定位 */
 }
 
@@ -1432,11 +1593,10 @@ const products = computed(() =>
 }
 
 .promo-sprite-img {
-  position: absolute;
-  top: -5.9375rem; /* -95px */
-  left: -36.625rem; /* -586px */
-  width: 69rem; /* 1104px - 雪碧图原始宽度 */
-  height: 92rem; /* 1472px - 雪碧图原始高度 */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .promo-content {
@@ -1444,14 +1604,16 @@ const products = computed(() =>
   z-index: 1; /* 确保内容在装饰图案下方 */
   display: flex;
   align-items: center;
-  padding: 1.5rem; /* 24px */
-  gap: 1rem; /* 16px */
+  padding: clamp(1rem, 2vw, 1.5rem); /* 响应式内边距：最小16px，最大24px */
+  gap: clamp(0.5rem, 1.5vw, 1rem); /* 响应式间距：最小8px，最大16px */
+  min-width: 0; /* 允许收缩 */
 }
 
 .promo-image {
   flex-shrink: 0;
-  width: 34.6875rem; /* 555px */
-  height: 13.875rem; /* 222px */
+  width: clamp(300px, 40%, 34.6875rem); /* 响应式宽度：最小300px，最大555px */
+  min-width: 250px; /* 设置最小宽度，防止过度挤压 */
+  height: clamp(10rem, 15vw, 13.875rem); /* 响应式高度：最小160px，最大222px */
   border-radius: 0.375rem; /* 6px */
   overflow: hidden;
 }
@@ -1465,25 +1627,28 @@ const products = computed(() =>
 .promo-text {
   flex: 1;
   color: white;
+  min-width: 0; /* 允许收缩 */
+  overflow: hidden; /* 防止内容溢出 */
 }
 
 .promo-text h4 {
   font-family: Inter, sans-serif;
-  font-size: 3rem; /* 48px */
+  font-size: clamp(1.5rem, 4vw, 3rem); /* 响应式字体：最小24px，最大48px */
   font-weight: 700;
-  line-height: 3.25rem; /* 52px */
+  line-height: 1.1;
   letter-spacing: 0;
   color: #FFFFFF;
   margin-bottom: 0.75rem; /* 12px */
   display: flex;
   align-items: center; /* Vertical alignment: Middle */
+  word-wrap: break-word; /* 允许长单词换行 */
 }
 
 .promo-highlight {
   font-family: Arial, sans-serif;
-  font-size: 0.875rem; /* 14px */
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem); /* 响应式字体：最小12px，最大14px */
   font-weight: 400;
-  line-height: 1.375rem; /* 22px */
+  line-height: 1.5;
   letter-spacing: 0;
   margin-bottom: 0.5rem; /* 8px */
   background: #D17B1F;
@@ -1499,12 +1664,13 @@ const products = computed(() =>
 .promo-howto,
 .promo-more {
   font-family: Inter, sans-serif;
-  font-size: 0.875rem; /* 14px */
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem); /* 响应式字体：最小12px，最大14px */
   font-weight: 400;
-  line-height: 1.125rem; /* 18px */
+  line-height: 1.3;
   letter-spacing: 0;
   color: #FFFFFF;
   margin-bottom: 0.75rem; /* 12px - 行间距 */
+  word-wrap: break-word; /* 允许长单词换行 */
   display: block; /* 改为block，让内容自然排列 */
 }
 

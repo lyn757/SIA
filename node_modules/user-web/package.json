@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 8084",
-    "build": "vite build",
+    "dev": "vite --port 8089",
+    "build": "npx vite build",
     "build:check": "vue-tsc && vite build",
     "preview": "vite preview"
   },

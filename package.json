@@ -12,6 +12,8 @@
     "dev:designer": "cd packages/designer-web && npm run dev",
     "dev:supplier": "cd packages/supplier-web && npm run dev",
     "dev:user": "cd packages/user-web && npm run dev",
+    "tunnel": "node scripts/tunnel.js",
+    "tunnel:main": "npx localtunnel --port 8080",
     "build": "npm run build:main && npm run build:designer && npm run build:supplier && npm run build:user",
     "build:main": "cd packages/main-web && npm run build",
     "build:designer": "cd packages/designer-web && npm run build",
@@ -20,5 +22,10 @@
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "http-proxy-middleware": "^3.0.5"
   }
 }

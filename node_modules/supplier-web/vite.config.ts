@@ -11,7 +11,15 @@ export default defineConfig({
   },
   server: {
     port: 8082,
+    host: '0.0.0.0',
     cors: true,
+    allowedHosts: [
+      'stack-bones-measuring-gbp.trycloudflare.com',
+      '.trycloudflare.com',
+      'localhost'
+    ],
+    hmr: false,
+    origin: '',
     headers: {
       'Access-Control-Allow-Origin': '*'
     }

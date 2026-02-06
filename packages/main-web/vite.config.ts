@@ -3,7 +3,9 @@ import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue()
+  ],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
@@ -11,7 +13,16 @@ export default defineConfig({
   },
   server: {
     port: 8080,
-    cors: true
+    host: '0.0.0.0',
+    cors: true,
+    strictPort: false,
+    allowedHosts: [
+      'massachusetts-adapted-inches-inserted.trycloudflare.com',
+      '.trycloudflare.com',
+      'localhost'
+    ],
+    hmr: false,
+    origin: ''
   },
   build: {
     target: 'es2015',

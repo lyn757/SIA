@@ -11,8 +11,16 @@ export default defineConfig({
   },
   server: {
     port: 8084,
-    host: true,
-    strictPort: true,
+    host: '0.0.0.0',
+    strictPort: false,
+    cors: true,
+    allowedHosts: [
+      'insider-representations-miscellaneous-ban.trycloudflare.com',
+      '.trycloudflare.com',
+      'localhost'
+    ],
+    hmr: false,
+    origin: '',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',

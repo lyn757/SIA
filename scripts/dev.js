@@ -5,7 +5,7 @@ const path = require('path')
 const apps = [
   { name: 'main-web', port: 8080, title: '基座应用' },
   { name: 'designer-web', port: 8081, title: 'B端设计师端' },
-  { name: 'supplier-web', port: 8082, title: 'B端供应商端' },
+  { name: 'supplier-web', port: 8083, title: 'B端供应商端' },
   { name: 'user-web', port: 8084, title: 'C端用户端' }
 ]
 

@@ -1,18 +1,18 @@
 import WujieVue from 'wujie-vue3'
 import { bus } from 'wujie'
 
-// 子应用配置
+// 子应用配置 - 使用反向代理路径
 const MICRO_APP_CONFIG = {
   'designer-web': {
-    url: 'http://localhost:8081',
+    url: '/designer',
     name: 'designer-web'
   },
   'supplier-web': {
-    url: 'http://localhost:8082', 
+    url: '/supplier', 
     name: 'supplier-web'
   },
   'user-web': {
-    url: 'http://localhost:8084',
+    url: '/user',
     name: 'user-web'
   }
 }

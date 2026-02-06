@@ -5,7 +5,7 @@ const path = require('path')
 const subApps = [
   {
     name: 'supplier-web',
-    port: 8082,
+    port: 8083,
     title: 'B端供应商端',
     routePrefix: '/supplier',
     displayName: 'Supplier'

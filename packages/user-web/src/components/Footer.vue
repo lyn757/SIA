@@ -19,7 +19,7 @@ const $t = (key: string) => i18n?.t(key) || key
 
 <style scoped>
 .site-footer {
-  background: #2c3e50;
+  background: #3C3C3C;
   color: white;
   margin-top: 3rem;
 }

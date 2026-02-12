@@ -75,7 +75,7 @@
               <div class="tab-content">
                 <!-- Case Product Tab -->
                 <div v-if="activeTab === 'product'" class="kiro-tab-pane">
-                  <div class="product-grid-2col">
+                  <div v-if="caseProducts.length > 0" class="product-grid-2col">
                     <div class="product-card-detail" v-for="item in caseProducts" :key="item.id">
                       <div class="product-card-image">
                         <img :src="item.image" :alt="item.name">
@@ -103,38 +103,54 @@
                       </div>
                     </div>
                   </div>
+                  <div v-else class="empty-state">
+                    <div class="empty-icon">
+                      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+                        <path d="M0 1006.933333V614.4h0.1536l203.537067-273.066667h616.618666l203.537067 273.066667H1024v392.533333H0z m785.066667-614.4H238.933333L68.266667 614.4l887.2448 0.2048L785.066667 392.533333zM392.533333 648.533333a119.466667 119.466667 0 1 0 238.933334 0 117.879467 117.879467 0 0 0-5.495467-33.928533H398.0288A117.879467 117.879467 0 0 0 392.533333 648.533333z m580.266667 17.066667H681.813333a170.666667 170.666667 0 0 1-339.626666 0H51.2v290.133333h921.6V665.6zM699.528533 214.698667l146.6368-146.6368 24.439467 24.439466-146.6368 146.6368-24.439467-24.439466zM494.933333 34.133333h34.133334v204.8h-34.133334V34.133333zM153.3952 92.501333l24.439467-24.439466 146.653866 146.653866-24.456533 24.4224L153.3952 92.501333z" fill="#D1D5DB"/>
+                      </svg>
+                    </div>
+                    <p class="empty-text">No data available</p>
+                  </div>
                 </div>
 
                 <!-- Design Inspiration Tab -->
                 <div v-if="activeTab === 'inspiration'" class="kiro-tab-pane">
-                  <div class="inspiration-content">
-                    <h3 class="inspiration-title">Design inspiration</h3>
-                    <p class="inspiration-intro">The overall design is dominated by warm wooden elements, paired with a soft beige color scheme, creating a comfortable and cozy Nordic style bedroom. The design inspiration for this space comes from the natural scenery of Scandinavia, pursuing a simple yet not simplistic aesthetic of life.</p>
+                  <div v-if="hasDesignInspiration && currentProduct?.designInspiration" class="inspiration-content">
+                    <h3 class="inspiration-title">{{ currentProduct.designInspiration.title }}</h3>
+                    <p class="inspiration-intro">{{ currentProduct.designInspiration.intro }}</p>
                     
                     <div class="inspiration-detail">
                       <div class="detail-row">
                         <span class="detail-label">color matching:</span>
-                        <span class="detail-text">Mainly in beige and natural wood colors, with a small amount of gray and green plant accents</span>
+                        <span class="detail-text">{{ currentProduct.designInspiration.colorMatching }}</span>
                       </div>
                       <div class="detail-row">
                         <span class="detail-label">Material Selection:</span>
-                        <span class="detail-text">Natural wood, cotton and linen fabric, wool carpet</span>
+                        <span class="detail-text">{{ currentProduct.designInspiration.materialSelection }}</span>
                       </div>
                       <div class="detail-row">
                         <span class="detail-label">spatial characteristics:</span>
-                        <span class="detail-text">Open and bright, with simple lines and practical functions</span>
+                        <span class="detail-text">{{ currentProduct.designInspiration.spatialCharacteristics }}</span>
                       </div>
                       <div class="detail-row">
                         <span class="detail-label">Designer's suggestion:</span>
-                        <span class="detail-text">Soft decoration color matching can be adjusted according to personal preferences, and adding green plants can make the space more vibrant.</span>
+                        <span class="detail-text">{{ currentProduct.designInspiration.designerSuggestion }}</span>
                       </div>
                     </div>
+                  </div>
+                  <div v-else class="empty-state">
+                    <div class="empty-icon">
+                      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+                        <path d="M0 1006.933333V614.4h0.1536l203.537067-273.066667h616.618666l203.537067 273.066667H1024v392.533333H0z m785.066667-614.4H238.933333L68.266667 614.4l887.2448 0.2048L785.066667 392.533333zM392.533333 648.533333a119.466667 119.466667 0 1 0 238.933334 0 117.879467 117.879467 0 0 0-5.495467-33.928533H398.0288A117.879467 117.879467 0 0 0 392.533333 648.533333z m580.266667 17.066667H681.813333a170.666667 170.666667 0 0 1-339.626666 0H51.2v290.133333h921.6V665.6zM699.528533 214.698667l146.6368-146.6368 24.439467 24.439466-146.6368 146.6368-24.439467-24.439466zM494.933333 34.133333h34.133334v204.8h-34.133334V34.133333zM153.3952 92.501333l24.439467-24.439466 146.653866 146.653866-24.456533 24.4224L153.3952 92.501333z" fill="#D1D5DB"/>
+                      </svg>
+                    </div>
+                    <p class="empty-text">No data available</p>
                   </div>
                 </div>
 
                 <!-- Case Review Tab -->
                 <div v-if="activeTab === 'review'" class="kiro-tab-pane">
-                  <div class="review-content">
+                  <div v-if="allReviews.length > 0" class="review-content">
                     <h3 class="review-title">Case Review ({{ totalReviews }}+)</h3>
                     
                     <div class="review-list">
@@ -152,9 +168,17 @@
                     
                     <div class="view-more-container" v-if="hasMoreReviews">
                       <div class="view-more-line"></div>
-                      <button class="view-more-btn" @click="loadMoreReviews">View more</button>
+                      <button class="view-more-btn" @click="openReviewModal">View more</button>
                       <div class="view-more-line"></div>
                     </div>
+                  </div>
+                  <div v-else class="empty-state">
+                    <div class="empty-icon">
+                      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+                        <path d="M0 1006.933333V614.4h0.1536l203.537067-273.066667h616.618666l203.537067 273.066667H1024v392.533333H0z m785.066667-614.4H238.933333L68.266667 614.4l887.2448 0.2048L785.066667 392.533333zM392.533333 648.533333a119.466667 119.466667 0 1 0 238.933334 0 117.879467 117.879467 0 0 0-5.495467-33.928533H398.0288A117.879467 117.879467 0 0 0 392.533333 648.533333z m580.266667 17.066667H681.813333a170.666667 170.666667 0 0 1-339.626666 0H51.2v290.133333h921.6V665.6zM699.528533 214.698667l146.6368-146.6368 24.439467 24.439466-146.6368 146.6368-24.439467-24.439466zM494.933333 34.133333h34.133334v204.8h-34.133334V34.133333zM153.3952 92.501333l24.439467-24.439466 146.653866 146.653866-24.456533 24.4224L153.3952 92.501333z" fill="#D1D5DB"/>
+                      </svg>
+                    </div>
+                    <p class="empty-text">No data available</p>
                   </div>
                 </div>
               </div>
@@ -171,18 +195,22 @@
                 <div class="stars">
                   <i class="bi bi-star-fill" v-for="n in 5" :key="n"></i>
                 </div>
-                <span class="rating-score">5.0</span>
+                <span class="rating-score">{{ productRating.toFixed(1) }}</span>
                 <a href="#" class="view-reviews-link">View all reviews</a>
               </div>
 
               <!-- Price and Designer -->
               <div class="price-designer-row">
-                <span class="current-price">$405</span>
-                <span class="designer-info">Designer: Nancy</span>
+                <span class="current-price">$<span class="price-number">{{ productPrice }}</span></span>
+                <span class="designer-info">Designer: {{ productDesigner }}</span>
               </div>
 
               <!-- Service Options Title -->
-              <h3 class="service-title">service options</h3>
+              <div class="service-title-container">
+                <div class="service-title-line"></div>
+                <h3 class="service-title">service options</h3>
+                <div class="service-title-line"></div>
+              </div>
 
               <!-- Design Drawings Option -->
               <div class="service-option">
@@ -199,26 +227,36 @@
               <div class="service-option">
                 <div class="option-header">
                   <label class="option-checkbox">
-                    <input type="checkbox" v-model="services.purchaseMaterials">
+                    <input type="checkbox" v-model="services.purchaseMaterials" @change="onPurchaseMaterialsChange">
                     <span>Purchase materials</span>
                   </label>
-                  <span class="option-price">$5,460.00</span>
+                  <span class="option-price">${{ materialsTotal.toFixed(2) }}</span>
                 </div>
-                <div v-if="services.purchaseMaterials" class="option-details">
+                <div class="option-details">
                   <div class="delivery-date">Expected delivery date: 2026-02-20</div>
                   
                   <!-- Materials Table -->
                   <table class="materials-table">
                     <thead>
                       <tr>
-                        <th></th>
+                        <th><input type="checkbox" v-model="selectAllMaterials" @change="toggleAllMaterials"></th>
                         <th>Product Name</th>
                         <th>Quantity</th>
                         <th>Price</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="item in materials" :key="item.id">
+                      <tr v-if="materials.length === 0">
+                        <td colspan="4" class="empty-data">
+                          <div class="empty-icon">
+                            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+                              <path d="M0 1006.933333V614.4h0.1536l203.537067-273.066667h616.618666l203.537067 273.066667H1024v392.533333H0z m785.066667-614.4H238.933333L68.266667 614.4l887.2448 0.2048L785.066667 392.533333zM392.533333 648.533333a119.466667 119.466667 0 1 0 238.933334 0 117.879467 117.879467 0 0 0-5.495467-33.928533H398.0288A117.879467 117.879467 0 0 0 392.533333 648.533333z m580.266667 17.066667H681.813333a170.666667 170.666667 0 0 1-339.626666 0H51.2v290.133333h921.6V665.6zM699.528533 214.698667l146.6368-146.6368 24.439467 24.439466-146.6368 146.6368-24.439467-24.439466zM494.933333 34.133333h34.133334v204.8h-34.133334V34.133333zM153.3952 92.501333l24.439467-24.439466 146.653866 146.653866-24.456533 24.4224L153.3952 92.501333z" fill="#D1D5DB"/>
+                            </svg>
+                          </div>
+                          <p class="empty-text">暂无数据</p>
+                        </td>
+                      </tr>
+                      <tr v-for="item in materials" :key="item.id" v-else>
                         <td><input type="checkbox" v-model="item.selected"></td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.quantity }}</td>
@@ -238,16 +276,21 @@
                   </label>
                   <span class="option-price">$1,200.00</span>
                 </div>
-                <div v-if="services.purchaseConstruction" class="option-details">
+                <div class="option-details">
                   <div class="date-picker">
-                    <input type="date" placeholder="*Select construction date">
+                    <input type="text" placeholder="*Select construction date" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'">
+                    <i class="bi bi-calendar"></i>
                   </div>
                 </div>
               </div>
 
               <!-- Total Price Section -->
               <div class="total-price-section">
-                <h4 class="total-title">Total Price</h4>
+                <div class="total-title-container">
+                  <div class="total-title-line"></div>
+                  <h4 class="total-title">Total Price</h4>
+                  <div class="total-title-line"></div>
+                </div>
                 <div class="price-row">
                   <span>Shipping:</span>
                   <span>-</span>
@@ -258,13 +301,13 @@
                 </div>
                 <div class="price-row total-row">
                   <span>Order Total:</span>
-                  <span>-</span>
+                  <span>{{ orderTotal }}</span>
                 </div>
               </div>
 
               <!-- Action Buttons -->
               <div class="action-buttons">
-                <button class="btn btn-redesign">Redesign</button>
+                <button class="btn btn-redesign" @click="showRedesignModal = true">Redesign</button>
                 <button class="btn btn-add-cart">Add to Cart</button>
                 <button class="btn btn-buy-now">Buy Now</button>
               </div>
@@ -276,15 +319,90 @@
 
     <!-- Footer -->
     <Footer />
+
+    <!-- Redesign Modal -->
+    <div v-if="showRedesignModal" class="modal-overlay" @click.self="showRedesignModal = false">
+      <div class="redesign-modal">
+        <button class="modal-close" @click="showRedesignModal = false">
+          <i class="bi bi-x"></i>
+        </button>
+        
+        <h2 class="modal-title">Request Modification</h2>
+        
+        <div class="modal-content-wrapper">
+          <p class="modal-description">Please select the furniture you want to modify and choose the specifications to change</p>
+          
+          <div class="furniture-list">
+            <!-- Cloud Sofa -->
+            <div class="furniture-item">
+              <label class="furniture-label">Cloud Sof:</label>
+              <div class="furniture-inputs">
+                <input type="text" placeholder="*Size" class="input-field">
+                <input type="text" placeholder="*Color" class="input-field">
+              </div>
+            </div>
+            
+            <!-- CloudDDDDDDDD DresserCloudDD DDDDDresser -->
+            <div class="furniture-item">
+              <label class="furniture-label">CloudDDDDDDDD DresserCloudDD DDDDDresser:</label>
+              <div class="furniture-inputs">
+                <input type="text" placeholder="*Size" class="input-field">
+                <input type="text" placeholder="*Color" class="input-field">
+              </div>
+            </div>
+            
+            <!-- Iron Bed -->
+            <div class="furniture-item">
+              <label class="furniture-label">Iron Bed:</label>
+              <div class="furniture-inputs">
+                <input type="text" placeholder="*Size" class="input-field">
+                <input type="text" placeholder="*Color" class="input-field">
+              </div>
+            </div>
+            
+            <!-- Nightstand -->
+            <div class="furniture-item">
+              <label class="furniture-label">Nightstand:</label>
+              <div class="furniture-inputs">
+                <input type="text" placeholder="*Size" class="input-field">
+                <input type="text" placeholder="*Color" class="input-field">
+              </div>
+            </div>
+            
+            <!-- Custom input -->
+            <div class="furniture-item">
+              <label class="furniture-label">Custom input:</label>
+              <textarea class="custom-textarea" placeholder="Enter custom requirements..."></textarea>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-actions">
+          <button class="btn-cancel" @click="showRedesignModal = false">Cancel</button>
+          <button class="btn-submit">Submit Modification Request</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review Modal -->
+    <ReviewModal 
+      :visible="showReviewModal" 
+      :reviews="reviewsWithDate"
+      @close="showReviewModal = false"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject, onMounted, getCurrentInstance } from 'vue'
+import { ref, inject, onMounted, getCurrentInstance, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
+import ReviewModal from '@/components/ReviewModal.vue'
 import type { I18nPlugin } from '@/plugins/i18n'
+import { getProductById } from '@/data/mockData'
+import type { Product } from '@/data/mockData'
+import { useLockScroll } from '@/composables/useLockScroll'
 
 const route = useRoute()
 const i18n = inject<I18nPlugin>('i18n')
@@ -297,23 +415,32 @@ const $t = (key: string) => {
   return i18n?.t(key) || key
 }
 
-// Product data
-const productImages = ref([
-  'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800&h=600&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&h=600&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&h=600&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800&h=600&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1600566752229-250ed79470e6?w=800&h=600&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop&q=80',
-])
+// 当前商品数据
+const currentProduct = ref<Product | null>(null)
 
-const selectedImage = ref(productImages.value[0])
+// Product data - 从当前商品获取或使用默认值
+const productImages = computed(() => {
+  return currentProduct.value?.detailImages || [
+    'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800&h=600&fit=crop&q=80'
+  ]
+})
+
+const selectedImage = ref('')
 const quantity = ref(1)
-const productTitle = ref('Warm wooden Nordic kitchen')
+const productTitle = computed(() => currentProduct.value?.title || 'Product Detail')
+const productPrice = computed(() => currentProduct.value?.price || 0)
+const productDesigner = computed(() => currentProduct.value?.designer.name || 'Designer')
+const productRating = computed(() => currentProduct.value?.rating || 5.0)
+const totalReviews = computed(() => currentProduct.value?.reviewCount || 0)
+
 const thumbnailListRef = ref<HTMLElement | null>(null)
 const activeTab = ref('product')
+const showRedesignModal = ref(false)
+const showReviewModal = ref(false)
+
+// 锁定页面滚动（当任一弹窗打开时）
+const anyModalOpen = computed(() => showRedesignModal.value || showReviewModal.value)
+useLockScroll(anyModalOpen)
 
 // Service options
 const services = ref({
@@ -324,113 +451,115 @@ const services = ref({
 
 // Materials list
 const materials = ref([
-  { id: 1, name: 'Kitchen cabinet', quantity: 1, price: 1500, selected: true },
-  { id: 2, name: 'Wall cabinet', quantity: 1, price: 800, selected: true },
-  { id: 3, name: 'Solid wood flooring', quantity: 1, price: 2300, selected: true },
-  { id: 4, name: 'Three trees painted', quantity: 1, price: 300, selected: true },
-  { id: 5, name: 'All wood coffee table', quantity: 1, price: 500, selected: true },
-  { id: 6, name: 'Cloud small round stool There are many styles of text available', quantity: 10, price: 60, selected: true }
+  { id: 1, name: 'Kitchen cabinet', quantity: 1, price: 1500, selected: false },
+  { id: 2, name: 'Wall cabinet', quantity: 1, price: 800, selected: false },
+  { id: 3, name: 'Solid wood flooring', quantity: 1, price: 2300, selected: false },
+  { id: 4, name: 'Three trees painted', quantity: 1, price: 300, selected: false },
+  { id: 5, name: 'All wood coffee table', quantity: 1, price: 500, selected: false },
+  { id: 6, name: 'Cloud small round stool There are many styles of text available', quantity: 10, price: 60, selected: false }
 ])
 
-// Case products data
-const caseProducts = ref([
-  {
-    id: 1,
-    name: 'White birch sofa',
-    price: 1000,
-    color: 'beige',
-    size: 'Double seat+Noble Consort seat+Single seat',
-    material: 'Fabric + Solid Wood',
-    description: 'This white birch sofa is made of high-density sponge and high-quality fabric, providing excellent comfort. Solid wood frame structure is stable, Nordic minimalist design, suitable for various home styles',
-    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop&q=80'
-  },
-  {
-    id: 2,
-    name: 'Cloud Small Circle',
-    price: null,
-    color: 'beige',
-    size: 'Double seat+Noble Consort seat+Single seat',
-    material: 'Fabric + Solid Wood',
-    description: 'This white birch sofa is made of high-density sponge and high-quality fabric, providing excellent comfort. Solid wood frame structure is stable, Nordic minimalist design, suitable for various home styles',
-    image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400&h=300&fit=crop&q=80'
-  },
-  {
-    id: 3,
-    name: 'All wood small desk',
-    price: null,
-    color: 'beige',
-    size: '120cm in length, 60cm in width, and 45cm in height',
-    material: 'ash',
-    description: 'This white birch sofa is made of high-density sponge and high-quality fabric, providing excellent comfort. Solid wood frame structure is stable, Nordic minimalist design, suitable for various home styles',
-    image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=300&fit=crop&q=80'
-  },
-  {
-    id: 4,
-    name: 'desk lamp',
-    price: 50,
-    color: 'Rice white+gray',
-    size: 'Double seat+Noble Consort seat+Single seat',
-    material: 'wool',
-    description: 'This white birch sofa is made of high-density sponge and high-quality fabric, providing excellent comfort. Solid wood frame structure is stable, Nordic minimalist design, suitable for various home styles',
-    image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop&q=80'
+// Select all materials checkbox
+const selectAllMaterials = ref(false)
+
+// Toggle all materials selection
+const toggleAllMaterials = () => {
+  isProgrammaticUpdate = true
+  materials.value.forEach(item => {
+    item.selected = selectAllMaterials.value
+  })
+  services.value.purchaseMaterials = selectAllMaterials.value
+  isProgrammaticUpdate = false
+}
+
+// 处理 Purchase materials 大类复选框点击
+const onPurchaseMaterialsChange = () => {
+  // 用户直接点击了大类复选框
+  isProgrammaticUpdate = true
+  if (services.value.purchaseMaterials) {
+    // 勾选大类 -> 全选所有商品
+    materials.value.forEach(item => {
+      item.selected = true
+    })
+    selectAllMaterials.value = true
+  } else {
+    // 取消大类 -> 取消所有商品
+    materials.value.forEach(item => {
+      item.selected = false
+    })
+    selectAllMaterials.value = false
   }
-])
+  isProgrammaticUpdate = false
+}
 
-// Case reviews data
-const allReviews = ref([
-  {
-    id: 1,
-    username: 'Username',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user1',
-    text: 'I really like our newly purchased bedroom furniture set! The gray metal frame is both stylish and has a soft touch. After two months of use (including children jumping off the bed and dogs taking a nap), it still looks brand new. The craftsman style headboard is very elegant, and the black bracket is super sturdy. The assembly is very simple, my husband and I took about 45 minutes. The only minor drawback is that the bed board can be a bit more sturdy, but at this price point, it is definitely the most cost-effective choice we have found. I have already recommended it to my friends!',
-    images: []
-  },
-  {
-    id: 2,
-    username: 'Username',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user2',
-    text: '',
-    images: [
-      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&h=200&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=200&h=200&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=80'
-    ]
-  },
-  {
-    id: 3,
-    username: 'Username',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user3',
-    text: 'This industrial style floor lamp is definitely the focus - the black iron structure feels very sturdy and won\'t shake at all. The adjustable lamp arm is perfect for directing light to where it is needed (we use it to read on the sofa). Installation does not require tools and can be completed within 5 minutes. The design of the exposed light bulb is very fashionable, and we paired it with Edison light bulbs to add a sense of style. I only gave it 4.5 stars because the wires were not as long as I had hoped. After 6 months of use, it looks and functions like new. This price is a must-have for those who want to add a bit of personality!',
-    images: [
-      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=200&h=200&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=200&h=200&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=200&h=200&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=200&h=200&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=200&h=200&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=200&h=200&fit=crop&q=80'
-    ]
-  },
-  {
-    id: 4,
-    username: 'Username',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user4',
-    text: 'I really like our newly purchased bedroom furniture set! The gray metal frame is both stylish and has a soft touch. After two months of use (including children jumping off the bed and dogs taking a nap), it still looks brand new. The craftsman style headboard is very elegant, and the black bracket is super sturdy. The assembly is very simple, my husband and I took about 45 minutes. The only minor drawback is that the bed board can be a bit more sturdy, but at this price point, it is definitely the most cost-effective choice we have found. I have already recommended it to my friends!',
-    images: []
-  },
-  {
-    id: 5,
-    username: 'Username',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user5',
-    text: 'I really like our newly purchased bedroom furniture set! The gray metal frame is both stylish and has a soft touch. After two months of use (including children jumping off the bed and dogs taking a nap), it still looks brand new. The craftsman style headboard is very elegant, and the black bracket is super sturdy. The assembly is very simple, my husband and I took about 45 minutes. The only minor drawback is that the bed board can be a bit more sturdy, but at this price point, it is definitely the most cost-effective choice we have found. I have already recommended it to my friends!',
-    images: [
-      'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=200&h=200&fit=crop&q=80'
-    ]
+// 价格定义
+const prices = {
+  designDrawings: 399.00,
+  purchaseMaterials: 5460.00,
+  purchaseConstruction: 1200.00
+}
+
+// 计算材料总价
+const materialsTotal = computed(() => {
+  const selectedItems = materials.value.filter(item => item.selected)
+  if (selectedItems.length === 0) {
+    return 0
   }
-])
+  return selectedItems.reduce((sum, item) => sum + (item.quantity * item.price), 0)
+})
 
-const totalReviews = ref(1000)
-const displayedReviews = ref(allReviews.value.slice(0, 3))
+// 计算订单总额
+const orderTotal = computed(() => {
+  let total = 0
+  
+  if (services.value.designDrawings) {
+    total += prices.designDrawings
+  }
+  
+  if (services.value.purchaseMaterials) {
+    total += materialsTotal.value
+  }
+  
+  if (services.value.purchaseConstruction) {
+    total += prices.purchaseConstruction
+  }
+  
+  return total > 0 ? `$${total.toFixed(2)}` : '-'
+})
+
+// 标志：是否正在程序化更新（避免循环触发）
+let isProgrammaticUpdate = false
+
+// 监听材料选择变化
+watch(() => materials.value.map(m => m.selected), () => {
+  if (isProgrammaticUpdate) return
+  
+  const allSelected = materials.value.every(item => item.selected)
+  const anySelected = materials.value.some(item => item.selected)
+  
+  selectAllMaterials.value = allSelected
+  
+  // 只要有任何商品被选中，就勾选大类（但不触发全选）
+  isProgrammaticUpdate = true
+  if (anySelected) {
+    services.value.purchaseMaterials = true
+  } else {
+    services.value.purchaseMaterials = false
+  }
+  isProgrammaticUpdate = false
+}, { deep: true })
+
+// Case products data - 从当前商品获取
+const caseProducts = computed(() => currentProduct.value?.caseProducts || [])
+
+// Case reviews data - 从当前商品获取
+const allReviews = computed(() => currentProduct.value?.reviews || [])
+
+const displayedReviews = ref<any[]>([])
 const hasMoreReviews = ref(true)
+
+// Control whether to show design inspiration content - 从当前商品获取
+const hasDesignInspiration = computed(() => currentProduct.value?.hasDesignInspiration || false)
 
 const loadMoreReviews = () => {
   const currentLength = displayedReviews.value.length
@@ -446,12 +575,38 @@ const loadMoreReviews = () => {
   }
 }
 
+// 打开评论弹窗
+const openReviewModal = () => {
+  showReviewModal.value = true
+}
+
+// 准备评论数据（添加日期）
+const reviewsWithDate = computed(() => {
+  return allReviews.value.map(review => ({
+    ...review,
+    date: '2026-01-28 17:12:05',
+    rating: 5 // 默认5星
+  }))
+})
+
 // 根据路由参数获取产品信息
 const loadProductData = () => {
   const productId = route.params.id
-  // TODO: 这里可以根据productId从API或本地数据获取产品信息
-  // 暂时使用默认标题
-  productTitle.value = 'Warm wooden Nordic kitchen'
+  
+  // 从模拟数据中获取商品信息
+  const product = getProductById(productId as string)
+  
+  if (product) {
+    currentProduct.value = product
+    // 设置第一张图片为选中图片
+    selectedImage.value = productImages.value[0] || ''
+    // 初始化评论显示
+    displayedReviews.value = allReviews.value.slice(0, 3)
+    hasMoreReviews.value = allReviews.value.length > 3
+  } else {
+    console.warn('Product not found:', productId)
+    // 可以跳转到404页面或显示错误信息
+  }
 }
 
 const increaseQty = () => {
@@ -483,7 +638,6 @@ onMounted(() => {
 
 /* Breadcrumb Section */
 .breadcrumb-section {
-  background: #FFFFFF;
 }
 
 /* Breadcrumb */
@@ -503,28 +657,28 @@ onMounted(() => {
 
 /* Main Content Container */
 .main-content-container {
-  padding-left: 79px;
-  padding-right: 79px;
+  padding-left: clamp(16px, 5vw, 79px);
+  padding-right: clamp(16px, 5vw, 79px);
 }
 
 @media (max-width: 1200px) {
   .main-content-container {
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: clamp(16px, 3vw, 40px);
+    padding-right: clamp(16px, 3vw, 40px);
   }
 }
 
 @media (max-width: 768px) {
   .main-content-container {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: clamp(12px, 2vw, 16px);
+    padding-right: clamp(12px, 2vw, 16px);
   }
 }
 
 .main-content-container .row {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+  gap: clamp(12px, 1.5vw, 24px);
+  flex-wrap: nowrap;
 }
 
 .main-content-container .row > * {
@@ -533,29 +687,47 @@ onMounted(() => {
 
 @media (max-width: 991px) {
   .main-content-container .row {
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: clamp(16px, 3vw, 24px);
   }
 }
 
 .col-left {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
-  max-width: 1097px;
+  max-width: clamp(600px, 60vw, 1097px);
 }
 
 .col-right {
   flex: 0 0 auto;
-  width: 650px;
+  width: clamp(400px, 35vw, 650px);
+  min-width: clamp(400px, 35vw, 650px);
 }
 
-@media (max-width: 1800px) {
+.col-right .product-info {
+  position: sticky;
+  top: clamp(16px, 2vw, 24px);
+  align-self: flex-start;
+  max-height: calc(100vh - clamp(32px, 4vw, 48px));
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.col-right .product-info::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+@media (max-width: 1400px) {
   .col-left {
     flex: 1 1 auto;
+    max-width: clamp(500px, 55vw, 900px);
   }
   
   .col-right {
-    flex: 0 0 auto;
-    width: 650px;
+    width: clamp(380px, 40vw, 600px);
+    min-width: clamp(380px, 40vw, 600px);
   }
 }
 
@@ -571,11 +743,10 @@ onMounted(() => {
 /* Image Gallery */
 .image-gallery {
   width: 100%;
-  max-width: 1097px;
-  margin-bottom: 1rem;
-  background: #FFFFFF;
+  max-width: 100%;
+  margin-bottom: clamp(12px, 1.5vw, 16px);
   padding: 0;
-  border-radius: 8px;
+  border-radius: clamp(4px, 0.5vw, 8px);
 }
 
 @media (max-width: 1200px) {
@@ -586,7 +757,7 @@ onMounted(() => {
 
 .gallery-layout {
   display: flex;
-  gap: 6px;
+  gap: clamp(4px, 0.5vw, 6px);
   align-items: flex-start;
   width: 100%;
 }
@@ -595,19 +766,19 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  height: 647px;
-  width: 131px;
+  height: clamp(400px, 45vw, 647px);
+  width: clamp(80px, 9vw, 131px);
 }
 
 .thumbnail-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: clamp(12px, 1.2vw, 16px);
   width: 100%;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 11px;
+  padding-right: clamp(6px, 0.8vw, 11px);
 }
 
 /* 自定义滚动条样式 */
@@ -630,9 +801,9 @@ onMounted(() => {
 }
 
 .thumbnail-item {
-  width: 120px;
-  height: 81px;
-  border-radius: 4px;
+  width: clamp(70px, 8.5vw, 120px);
+  height: clamp(47px, 5.7vw, 81px);
+  border-radius: clamp(2px, 0.3vw, 4px);
   overflow: hidden;
   cursor: pointer;
   border: 2px solid transparent;
@@ -653,9 +824,9 @@ onMounted(() => {
 
 .main-image {
   flex: 1;
-  max-width: 960px;
-  height: 647px;
-  border-radius: 4px;
+  max-width: 100%;
+  height: clamp(400px, 45vw, 647px);
+  border-radius: clamp(2px, 0.3vw, 4px);
   overflow: hidden;
 }
 
@@ -748,10 +919,10 @@ onMounted(() => {
 
 /* Product Info */
 .product-info {
-  padding: 1.5rem;
+  padding: clamp(16px, 2vw, 24px);
   background: #FFFFFF;
-  border-radius: 8px;
-  max-width: 650px;
+  border-radius: clamp(4px, 0.5vw, 8px);
+  max-width: 100%;
   width: 100%;
 }
 
@@ -763,47 +934,47 @@ onMounted(() => {
 
 @media (max-width: 768px) {
   .product-info {
-    padding: 1rem;
+    padding: clamp(12px, 2vw, 16px);
   }
 }
 
 .product-title {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-  font-size: 36px !important;
+  font-size: clamp(24px, 3vw, 36px) !important;
   font-weight: 700 !important;
-  line-height: 40px !important;
+  line-height: clamp(28px, 3.5vw, 40px) !important;
   letter-spacing: 0 !important;
   color: #333333 !important;
-  margin-bottom: 16px !important;
+  margin-bottom: clamp(12px, 1.5vw, 16px) !important;
   vertical-align: middle;
 }
 
 @media (max-width: 768px) {
   .product-title {
-    font-size: 28px !important;
-    line-height: 32px !important;
+    font-size: clamp(20px, 5vw, 28px) !important;
+    line-height: clamp(24px, 6vw, 32px) !important;
   }
 }
 
 .rating-section {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: clamp(10px, 1.2vw, 12px);
+  margin-bottom: clamp(12px, 1.5vw, 16px);
 }
 
 .stars {
   color: #FFA500;
   display: flex;
-  gap: 8px;
+  gap: clamp(6px, 0.8vw, 8px);
   align-items: center;
 }
 
 .stars i {
-  font-size: 24px;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
+  font-size: clamp(18px, 2vw, 24px);
+  width: clamp(18px, 2vw, 24px);
+  height: clamp(18px, 2vw, 24px);
+  line-height: clamp(18px, 2vw, 24px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -811,9 +982,9 @@ onMounted(() => {
 
 .rating-score {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-  font-size: 16px !important;
+  font-size: clamp(14px, 1.4vw, 16px) !important;
   font-weight: 400 !important;
-  line-height: 20px !important;
+  line-height: clamp(18px, 1.8vw, 20px) !important;
   letter-spacing: 0 !important;
   color: #333333 !important;
   vertical-align: middle;
@@ -821,11 +992,13 @@ onMounted(() => {
 
 .view-reviews-link {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 14px;
+  font-size: clamp(14px, 1.4vw, 16px);
   font-weight: 400;
-  color: #00699A;
+  line-height: clamp(18px, 1.8vw, 20px);
+  color: #00689A;
   text-decoration: none;
   margin-left: auto;
+  vertical-align: middle;
 }
 
 .view-reviews-link:hover {
@@ -836,175 +1009,509 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 0;
 }
 
 .current-price {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 32px;
+  font-size: clamp(16px, 1.8vw, 20px);
   font-weight: 700;
+  line-height: clamp(32px, 3.5vw, 40px);
   color: #333333;
+  vertical-align: middle;
+}
+
+.price-number {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 700;
+  line-height: clamp(24px, 2.6vw, 28px);
+  color: #333333;
+  vertical-align: middle;
 }
 
 .designer-info {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 14px;
+  font-size: clamp(14px, 1.4vw, 16px);
   font-weight: 400;
-  color: #666666;
+  line-height: clamp(18px, 1.8vw, 20px);
+  color: #333333;
+  text-align: right;
+  vertical-align: middle;
+}
+
+.service-title-container {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.5vw, 16px);
+  margin: clamp(16px, 2vw, 24px) 0 clamp(12px, 1.5vw, 16px) 0;
+}
+
+.service-title-line {
+  flex: 1;
+  height: 1px;
+  background: #E5E6EB;
+  border: none;
 }
 
 .service-title {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
+  font-size: clamp(14px, 1.4vw, 16px);
   font-weight: 400;
   color: #999999;
   text-align: center;
-  margin: 24px 0 16px 0;
+  margin: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .service-option {
-  margin-bottom: 16px;
+  margin-top: clamp(16px, 2vw, 24px);
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: clamp(6px, 0.8vw, 8px);
+  padding-top: 0;
+}
+
+.service-option:first-of-type {
+  padding-top: 0;
+  margin-top: clamp(16px, 2vw, 24px);
+}
+
+.service-option:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .option-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
+  padding: 0;
 }
 
 .option-checkbox {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: clamp(6px, 0.8vw, 8px);
   cursor: pointer;
   margin: 0;
 }
 
 .option-checkbox input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+  width: clamp(16px, 1.8vw, 20px);
+  height: clamp(16px, 1.8vw, 20px);
   cursor: pointer;
+  flex-shrink: 0;
+  border: none !important;
+  outline: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  position: relative;
+}
+
+.option-checkbox input[type="checkbox"]::before {
+  content: '';
+  display: block;
+  width: clamp(16px, 1.8vw, 20px);
+  height: clamp(16px, 1.8vw, 20px);
+  border: 1px solid #D1D5DB;
+  border-radius: clamp(1.5px, 0.2vw, 2px);
+  background-color: #fff;
+}
+
+.option-checkbox input[type="checkbox"]:checked::before {
+  background-color: #00699A;
+  border-color: #00699A;
+}
+
+.option-checkbox input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: clamp(12px, 1.2vw, 14px);
+  font-weight: bold;
 }
 
 .option-checkbox span {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
+  font-size: clamp(14px, 1.4vw, 16px);
   font-weight: 400;
-  color: #333333;
+  line-height: clamp(18px, 1.8vw, 20px);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .option-price {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
+  font-size: clamp(14px, 1.4vw, 16px);
   font-weight: 700;
-  color: #333333;
+  line-height: clamp(18px, 1.8vw, 20px);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .option-details {
-  margin-top: 12px;
+  margin-top: 0;
   padding-left: 26px;
+  background: transparent;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-radius: 0;
+  animation: slideDown 0.3s ease-out;
+  overflow: hidden;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
 }
 
 .delivery-date {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
   font-weight: 400;
-  color: #FF6B6B;
-  margin-bottom: 12px;
+  line-height: clamp(16px, 1.6vw, 18px);
+  color: #8B2C00;
+  margin-bottom: clamp(6px, 0.8vw, 8px);
+  vertical-align: middle;
 }
 
 .materials-table {
   width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 16px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 0;
+  background: #FFFFFF;
+  border-radius: clamp(3px, 0.4vw, 4px);
+  border: 1px solid #E5E6EB;
+  border-top: none;
 }
 
 .materials-table thead th {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: #666666;
+  font-size: clamp(12px, 1.2vw, 14px);
+  font-weight: 500;
+  line-height: clamp(18px, 1.8vw, 22px);
+  color: #1D2129;
   text-align: left;
-  padding: 8px;
-  border-bottom: 1px solid #E5E7EB;
+  padding: clamp(10px, 1.2vw, 12px) clamp(12px, 1.5vw, 16px);
+  background: #F9FAFB;
+  border-bottom: 1px solid #E5E6EB;
+}
+
+.materials-table thead th:first-child {
+  width: clamp(45px, 5vw, 50px);
+  text-align: center;
+  padding-left: clamp(12px, 1.5vw, 16px);
+  border-top-left-radius: 0;
+}
+
+.materials-table thead th:first-child input[type="checkbox"] {
+  width: clamp(14px, 1.5vw, 16px);
+  height: clamp(14px, 1.5vw, 16px);
+  cursor: pointer;
+  margin: 0;
+  border: none !important;
+  outline: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  position: relative;
+}
+
+.materials-table thead th:first-child input[type="checkbox"]::before {
+  content: '';
+  display: block;
+  width: clamp(14px, 1.5vw, 16px);
+  height: clamp(14px, 1.5vw, 16px);
+  border: 1px solid #D1D5DB;
+  border-radius: clamp(1.5px, 0.2vw, 2px);
+  background-color: #fff;
+}
+
+.materials-table thead th:first-child input[type="checkbox"]:checked::before {
+  background-color: #00699A;
+  border-color: #00699A;
+}
+
+.materials-table thead th:first-child input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: bold;
+}
+
+.materials-table thead th:last-child {
+  border-top-right-radius: 0;
+}
+
+.materials-table thead th:nth-child(2) {
+  text-align: left;
+}
+
+.materials-table thead th:nth-child(3),
+.materials-table thead th:nth-child(4) {
+  text-align: center;
+  width: clamp(100px, 12vw, 120px);
 }
 
 .materials-table tbody td {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
   font-weight: 400;
-  color: #333333;
-  padding: 8px;
+  line-height: clamp(18px, 1.8vw, 22px);
+  color: #1D2129;
+  padding: clamp(10px, 1.2vw, 12px) clamp(12px, 1.5vw, 16px);
   border-bottom: 1px solid #F3F4F6;
+  vertical-align: middle;
+  background: #FFFFFF;
+}
+
+.materials-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.materials-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: clamp(3px, 0.4vw, 4px);
+}
+
+.materials-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: clamp(3px, 0.4vw, 4px);
 }
 
 .materials-table tbody td:first-child {
-  width: 30px;
+  width: clamp(45px, 5vw, 50px);
+  text-align: center;
+  padding-left: clamp(12px, 1.5vw, 16px);
+}
+
+.materials-table tbody td:nth-child(2) {
+  text-align: left;
+}
+
+.materials-table tbody td:nth-child(3),
+.materials-table tbody td:nth-child(4) {
+  text-align: center;
+}
+
+.materials-table tbody td input[type="checkbox"] {
+  width: clamp(14px, 1.5vw, 16px);
+  height: clamp(14px, 1.5vw, 16px);
+  cursor: pointer;
+  margin: 0;
+  border: none !important;
+  outline: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  position: relative;
+}
+
+.materials-table tbody td input[type="checkbox"]::before {
+  content: '';
+  display: block;
+  width: clamp(14px, 1.5vw, 16px);
+  height: clamp(14px, 1.5vw, 16px);
+  border: 1px solid #D1D5DB;
+  border-radius: clamp(1.5px, 0.2vw, 2px);
+  background-color: #fff;
+}
+
+.materials-table tbody td input[type="checkbox"]:checked::before {
+  background-color: #00699A;
+  border-color: #00699A;
+}
+
+.materials-table tbody td input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: bold;
+}
+
+/* 空数据占位符样式 */
+.materials-table .empty-data {
+  text-align: center;
+  padding: clamp(32px, 4vw, 40px) clamp(16px, 2vw, 20px);
+}
+
+.materials-table .empty-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: clamp(10px, 1.2vw, 12px);
+}
+
+.materials-table .empty-icon svg {
+  width: clamp(56px, 6vw, 64px);
+  height: clamp(56px, 6vw, 64px);
+}
+
+.materials-table .empty-text {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(12px, 1.2vw, 14px);
+  font-weight: 400;
+  line-height: clamp(18px, 1.8vw, 20px);
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+  text-align: center;
+}
+
+.date-picker {
+  position: relative;
+  margin-top: clamp(6px, 0.8vw, 8px);
+}
+
+.date-picker i {
+  position: absolute;
+  right: clamp(10px, 1.2vw, 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  color: #5C5C5C;
+  font-size: clamp(14px, 1.4vw, 16px);
+  pointer-events: none;
 }
 
 .date-picker input {
   width: 100%;
-  padding: 10px;
+  padding: clamp(10px, 1.2vw, 12px);
   border: 1px solid #E5E7EB;
-  border-radius: 4px;
+  border-radius: clamp(3px, 0.4vw, 4px);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 14px;
-  color: #999999;
+  font-size: clamp(12px, 1.2vw, 14px);
+  font-weight: 400;
+  line-height: clamp(16px, 1.6vw, 18px);
+  color: #5C5C5C;
+  background: #FFFFFF;
+}
+
+.date-picker input::placeholder {
+  color: #5C5C5C;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(12px, 1.2vw, 14px);
+  font-weight: 400;
+  line-height: clamp(16px, 1.6vw, 18px);
 }
 
 .total-price-section {
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #E5E7EB;
+  padding-top: clamp(6px, 0.8vw, 8px);
+  border-top: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: relative;
+  gap: clamp(6px, 0.8vw, 8px);
+}
+
+.total-title-container {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.5vw, 16px);
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.total-title-line {
+  flex: 1;
+  height: 1px;
+  background: #E5E6EB;
+  border: none;
 }
 
 .total-title {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
+  font-size: clamp(14px, 1.4vw, 16px);
   font-weight: 400;
   color: #999999;
   text-align: center;
-  margin-bottom: 12px;
+  margin: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .price-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
+  padding: 0;
+  margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 14px;
+  font-size: clamp(14px, 1.4vw, 16px);
   font-weight: 400;
-  color: #666666;
+  line-height: clamp(18px, 1.8vw, 20px);
+  color: rgba(0, 0, 0, 0.9);
+  gap: clamp(6px, 0.8vw, 8px);
+  text-align: right;
+}
+
+.price-row:first-of-type {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .price-row.total-row {
+  border-top: none;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: clamp(16px, 2vw, 24px);
+}
+
+.price-row.total-row span:last-child {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(14px, 1.4vw, 16px);
   font-weight: 700;
-  color: #333333;
-  border-top: 1px solid #E5E7EB;
-  padding-top: 12px;
-  margin-top: 8px;
+  line-height: clamp(18px, 1.8vw, 20px);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .action-buttons {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  gap: clamp(10px, 1.2vw, 12px);
+  margin-top: 0;
 }
 
 .btn-redesign {
   flex: 1;
   background: #E5E7EB;
   border: none;
-  color: #666666;
-  padding: 12px;
-  border-radius: 4px;
+  color: #333333;
+  padding: clamp(10px, 1.2vw, 12px);
+  border-radius: clamp(3px, 0.4vw, 4px);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 400;
+  line-height: clamp(22px, 2.4vw, 28px);
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .btn-redesign:hover {
@@ -1012,17 +1519,23 @@ onMounted(() => {
 }
 
 .btn-add-cart {
-  flex: 1;
+  flex: 0 0 clamp(220px, 24vw, 275px);
+  width: clamp(220px, 24vw, 275px);
   background: #00699A;
   border: none;
-  color: white;
-  padding: 12px;
-  border-radius: 4px;
+  color: #FFFFFF;
+  padding: clamp(10px, 1.2vw, 12px);
+  border-radius: clamp(3px, 0.4vw, 4px);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 400;
+  line-height: clamp(22px, 2.4vw, 28px);
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .btn-add-cart:hover {
@@ -1034,18 +1547,36 @@ onMounted(() => {
   background: white;
   border: 2px solid #00699A;
   color: #00699A;
-  padding: 12px;
-  border-radius: 4px;
+  padding: clamp(10px, 1.2vw, 12px);
+  border-radius: clamp(3px, 0.4vw, 4px);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 400;
+  line-height: clamp(22px, 2.4vw, 28px);
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .btn-buy-now:hover {
   background: #00699A;
   color: white;
+}
+
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .btn-redesign,
+  .btn-add-cart,
+  .btn-buy-now {
+    flex: 1 1 auto;
+    width: 100%;
+  }
 }
 
 /* Related Products */
@@ -1215,6 +1746,34 @@ onMounted(() => {
   to {
     opacity: 1;
   }
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  background: #FFFFFF;
+  border-radius: 4px;
+}
+
+.empty-icon {
+  margin-bottom: 16px;
+}
+
+.empty-icon svg {
+  display: block;
+}
+
+.empty-text {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #9CA3AF;
+  margin: 0;
 }
 
 /* Product Grid 2 Columns */
@@ -1613,5 +2172,337 @@ onMounted(() => {
 .view-more-btn:hover {
   color: #005580 !important;
   text-decoration: underline;
+}
+
+/* Redesign Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.redesign-modal {
+  position: relative;
+  width: clamp(320px, 90vw, 1000px);
+  max-width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #FFFFFF;
+  border-radius: clamp(4px, 0.5vw, 8px);
+  padding: clamp(20px, 3vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+@media (max-width: 768px) {
+  .redesign-modal {
+    width: 95vw;
+    max-height: 95vh;
+    padding: clamp(16px, 4vw, 20px);
+    gap: 0;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: clamp(12px, 2vw, 16px);
+  right: clamp(12px, 2vw, 16px);
+  width: clamp(28px, 4vw, 32px);
+  height: clamp(28px, 4vw, 32px);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(20px, 3vw, 24px);
+  color: #6B7280;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.modal-close:hover {
+  color: #111827;
+}
+
+.modal-title {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: #1D2129;
+  margin: 0 0 clamp(16px, 2.5vw, 24px) 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .modal-title {
+    font-size: clamp(16px, 5vw, 20px);
+    margin: 0 0 clamp(12px, 4vw, 20px) 0;
+  }
+}
+
+.modal-description {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(13px, 1.5vw, 14px);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: #1D2129;
+  margin: 0;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .modal-description {
+    font-size: clamp(12px, 3.5vw, 13px);
+    margin: 0;
+  }
+}
+
+.modal-content-wrapper {
+  background: #F6F6F6;
+  padding: clamp(12px, 2vw, 16px);
+  border-radius: clamp(4px, 0.5vw, 6px);
+  margin-bottom: clamp(16px, 2.5vw, 24px);
+}
+
+@media (max-width: 768px) {
+  .modal-content-wrapper {
+    padding: clamp(12px, 4vw, 16px);
+    margin-bottom: clamp(16px, 5vw, 20px);
+  }
+}
+
+.furniture-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vw, 16px);
+  margin-top: clamp(12px, 2vw, 16px);
+}
+
+@media (max-width: 768px) {
+  .furniture-list {
+    gap: clamp(12px, 4vw, 16px);
+    margin-top: clamp(12px, 4vw, 16px);
+  }
+}
+
+.furniture-item {
+  display: grid;
+  grid-template-columns: minmax(100px, 15%) 1fr;
+  gap: clamp(12px, 2vw, 16px);
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  .furniture-item {
+    grid-template-columns: minmax(80px, 20%) 1fr;
+    gap: clamp(8px, 2vw, 12px);
+  }
+}
+
+@media (max-width: 768px) {
+  .furniture-item {
+    grid-template-columns: 1fr;
+    gap: clamp(8px, 3vw, 12px);
+    align-items: start;
+  }
+}
+
+.furniture-label {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(12px, 1.5vw, 14px);
+  font-weight: 400;
+  line-height: 1.4;
+  color: #6B7280;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  align-self: center;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .furniture-label {
+    align-self: start;
+    font-size: clamp(12px, 3.5vw, 14px);
+  }
+}
+
+.furniture-inputs {
+  display: flex;
+  gap: clamp(8px, 1.5vw, 12px);
+  flex: 1;
+  max-width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 992px) {
+  .furniture-inputs {
+    flex-direction: column;
+    gap: clamp(8px, 2vw, 12px);
+  }
+}
+
+@media (max-width: 768px) {
+  .furniture-inputs {
+    flex-direction: column;
+    gap: clamp(8px, 3vw, 12px);
+    width: 100%;
+  }
+}
+
+.input-field {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: clamp(36px, 5vw, 40px);
+  padding: clamp(8px, 1.2vw, 10px) clamp(10px, 1.5vw, 12px);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(13px, 1.5vw, 14px);
+  font-weight: 400;
+  line-height: 1.4;
+  color: #111827;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: clamp(3px, 0.5vw, 4px);
+  outline: none;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.input-field::placeholder {
+  color: #9CA3AF;
+}
+
+.input-field:focus {
+  background: #FFFFFF;
+  border-color: #00699A;
+}
+
+@media (max-width: 768px) {
+  .input-field {
+    width: 100%;
+    height: clamp(36px, 10vw, 40px);
+    font-size: clamp(13px, 3.5vw, 14px);
+  }
+}
+
+.custom-textarea {
+  width: 100%;
+  min-height: clamp(100px, 15vh, 120px);
+  padding: clamp(8px, 1.2vw, 10px) clamp(10px, 1.5vw, 12px);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(13px, 1.5vw, 14px);
+  font-weight: 400;
+  line-height: 1.6;
+  color: #111827;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: clamp(3px, 0.5vw, 4px);
+  outline: none;
+  resize: vertical;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.custom-textarea::placeholder {
+  color: #9CA3AF;
+}
+
+.custom-textarea:focus {
+  background: #FFFFFF;
+  border-color: #00699A;
+}
+
+@media (max-width: 768px) {
+  .custom-textarea {
+    min-height: clamp(80px, 20vh, 100px);
+    font-size: clamp(13px, 3.5vw, 14px);
+  }
+}
+
+.modal-actions {
+  display: flex;
+  gap: clamp(12px, 2vw, 16px);
+  justify-content: flex-end;
+  margin-top: 0;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .modal-actions {
+    flex-direction: column-reverse;
+    gap: clamp(10px, 3vw, 12px);
+  }
+}
+
+.btn-cancel {
+  padding: clamp(8px, 1.2vw, 10px) clamp(20px, 2.5vw, 24px);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(13px, 1.5vw, 14px);
+  font-weight: 500;
+  line-height: 1.4;
+  color: #374151;
+  background: #FFFFFF;
+  border: 1px solid #D1D5DB;
+  border-radius: clamp(3px, 0.5vw, 4px);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-cancel:hover {
+  background: #F9FAFB;
+  border-color: #9CA3AF;
+}
+
+@media (max-width: 768px) {
+  .btn-cancel {
+    width: 100%;
+    padding: clamp(10px, 3vw, 12px) clamp(20px, 6vw, 24px);
+    font-size: clamp(13px, 3.5vw, 14px);
+  }
+}
+
+.btn-submit {
+  padding: clamp(8px, 1.2vw, 10px) clamp(20px, 2.5vw, 24px);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(13px, 1.5vw, 14px);
+  font-weight: 500;
+  line-height: 1.4;
+  color: #FFFFFF;
+  background: #111827;
+  border: 1px solid #111827;
+  border-radius: clamp(3px, 0.5vw, 4px);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-submit:hover {
+  background: #1F2937;
+  border-color: #1F2937;
+}
+
+@media (max-width: 768px) {
+  .btn-submit {
+    width: 100%;
+    padding: clamp(10px, 3vw, 12px) clamp(20px, 6vw, 24px);
+    font-size: clamp(13px, 3.5vw, 14px);
+  }
 }
 </style>

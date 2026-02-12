@@ -17,12 +17,12 @@
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-4">
             <a href="#" class="navbar-brand">LOGO</a>
-            <nav class="d-none d-md-flex">
+            <nav class="d-none d-md-flex align-items-center">
               <router-link to="/" class="nav-link" exact active-class="active">{{ $t('nav.home') }}</router-link>
               <router-link to="/shop" class="nav-link" active-class="active">{{ $t('nav.shop') }}</router-link>
               <router-link to="/designers" class="nav-link" active-class="active">{{ $t('nav.designers') }}</router-link>
               <router-link to="/community" class="nav-link" active-class="active">{{ $t('nav.community') }}</router-link>
-              <a href="#" class="nav-link">{{ $t('nav.about') }}</a>
+              <AboutUsDropdown />
             </nav>
           </div>
           <div class="d-flex align-items-center gap-3">
@@ -87,14 +87,14 @@
           <div class="filter-section">
             <h6 class="filter-title">Color and Tone</h6>
             <div class="color-grid">
-              <div class="color-box" style="background: #e8e8e8;" @click="toggleColor('#e8e8e8')" :class="{ active: filters.colors.includes('#e8e8e8') }"></div>
-              <div class="color-box" style="background: #2c3e50;" @click="toggleColor('#2c3e50')" :class="{ active: filters.colors.includes('#2c3e50') }"></div>
-              <div class="color-box" style="background: #7f8c8d;" @click="toggleColor('#7f8c8d')" :class="{ active: filters.colors.includes('#7f8c8d') }"></div>
-              <div class="color-box" style="background: #95a5a6;" @click="toggleColor('#95a5a6')" :class="{ active: filters.colors.includes('#95a5a6') }"></div>
-              <div class="color-box" style="background: #a0522d;" @click="toggleColor('#a0522d')" :class="{ active: filters.colors.includes('#a0522d') }"></div>
-              <div class="color-box" style="background: #27ae60;" @click="toggleColor('#27ae60')" :class="{ active: filters.colors.includes('#27ae60') }"></div>
-              <div class="color-box" style="background: #3498db;" @click="toggleColor('#3498db')" :class="{ active: filters.colors.includes('#3498db') }"></div>
-              <div class="color-box" style="background: #16a085;" @click="toggleColor('#16a085')" :class="{ active: filters.colors.includes('#16a085') }"></div>
+              <div 
+                v-for="color in colorOptions" 
+                :key="color"
+                class="color-box" 
+                :style="{ background: color }" 
+                @click="toggleColor(color)" 
+                :class="{ active: filters.colors.includes(color) }"
+              ></div>
             </div>
           </div>
 
@@ -181,14 +181,16 @@
         <main class="content-area">
           <!-- Room Type Navigation -->
           <div class="room-nav">
-            <a href="#" class="room-nav-item" :class="{ active: selectedRoom === 'all' }" @click.prevent="selectRoom('all')">All</a>
-            <a href="#" class="room-nav-item" :class="{ active: selectedRoom === 'kitchen' }" @click.prevent="selectRoom('kitchen')">Kitchen</a>
-            <a href="#" class="room-nav-item" :class="{ active: selectedRoom === 'bathroom' }" @click.prevent="selectRoom('bathroom')">Bathroom</a>
-            <a href="#" class="room-nav-item" :class="{ active: selectedRoom === 'living' }" @click.prevent="selectRoom('living')">Living Room</a>
-            <a href="#" class="room-nav-item" :class="{ active: selectedRoom === 'bedroom' }" @click.prevent="selectRoom('bedroom')">Bedroom</a>
-            <a href="#" class="room-nav-item" :class="{ active: selectedRoom === 'dining' }" @click.prevent="selectRoom('dining')">Dining Room</a>
-            <a href="#" class="room-nav-item" :class="{ active: selectedRoom === 'entrance' }" @click.prevent="selectRoom('entrance')">Entrance</a>
-            <a href="#" class="room-nav-item" :class="{ active: selectedRoom === 'whole' }" @click.prevent="selectRoom('whole')">Whole House</a>
+            <a 
+              v-for="room in roomNavItems" 
+              :key="room.id"
+              href="#" 
+              class="room-nav-item" 
+              :class="{ active: selectedRoom === room.id }" 
+              @click.prevent="selectRoom(room.id)"
+            >
+              {{ room.label }}
+            </a>
           </div>
 
           <!-- Carousel -->
@@ -315,55 +317,62 @@
           <div class="product-section-container">
             <!-- Section Tabs -->
             <div class="section-tabs">
-              <a href="#" class="tab-item" :class="{ active: selectedTab === 'all' }" @click.prevent="selectTab('all')">All Designs</a>
-              <a href="#" class="tab-item" :class="{ active: selectedTab === 'recommended' }" @click.prevent="selectTab('recommended')">Recommended</a>
-              <a href="#" class="tab-item" :class="{ active: selectedTab === 'popular' }" @click.prevent="selectTab('popular')">Most Popular</a>
-              <a href="#" class="tab-item" :class="{ active: selectedTab === 'bestsellers' }" @click.prevent="selectTab('bestsellers')">Bestsellers</a>
-              <a href="#" class="tab-item" :class="{ active: selectedTab === 'special' }" @click.prevent="selectTab('special')">Special Offer</a>
+              <a 
+                v-for="tab in productTabs" 
+                :key="tab.id"
+                href="#" 
+                class="tab-item" 
+                :class="{ active: selectedTab === tab.id }" 
+                @click.prevent="selectTab(tab.id)"
+              >
+                {{ tab.label }}
+              </a>
             </div>
 
             <!-- Product Grid -->
             <div class="product-grid">
             <template v-for="(product, index) in products" :key="product.id">
               <!-- Product Card -->
-              <div class="product-card">
-                <div class="product-image">
-                  <img :src="product.image" :alt="product.title">
+              <router-link :to="`/case/${product.id}`" class="product-card-link">
+                <div class="product-card">
+                  <div class="product-image">
+                    <img :src="product.image" :alt="product.title">
+                  </div>
+                  <div class="product-info">
+                    <div class="product-price-row">
+                      <div class="price-section">
+                        <span class="product-price" :class="{ 'has-discount': product.discount }">
+                          <span class="currency-symbol">$</span>{{ product.price }}
+                        </span>
+                        <span v-if="product.originalPrice" class="original-price">was ${{ product.originalPrice }}</span>
+                        <span v-if="product.discount" class="discount-badge">{{ product.discount }}% off</span>
+                      </div>
+                      <div class="product-stats">
+                        <span class="stat-item"><i class="bi bi-eye"></i> {{ product.views }}</span>
+                        <span class="stat-item"><i class="bi bi-heart"></i> {{ product.likes || '1.2K' }}</span>
+                        <span class="stat-item"><i class="bi bi-star"></i> {{ product.favorites || '854' }}</span>
+                        <span class="stat-item"><i class="bi bi-share"></i> {{ product.shares || '22' }}</span>
+                        <span class="stat-item"><i class="bi bi-cart"></i> {{ product.cart || '12' }}</span>
+                      </div>
+                    </div>
+                    <h6 class="product-title">{{ product.title }}</h6>
+                    <p class="product-desc">{{ product.description }}</p>
+                    <div class="product-meta">
+                      <div class="designer-info">
+                        <img :src="product.avatar" :alt="product.designer.name">
+                        <span>{{ product.designer.name }}</span>
+                      </div>
+                    </div>
+                    <div class="product-buttons">
+                      <button class="btn btn-add-cart" @click.prevent="addToCart(product)">{{ $t('home.addCart') }}</button>
+                      <button class="btn btn-buy-now" @click.prevent="buyNow(product)">
+                        {{ $t('home.buyNow') }}
+                        <i class="bi bi-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div class="product-info">
-                  <div class="product-price-row">
-                    <div class="price-section">
-                      <span class="product-price" :class="{ 'has-discount': product.discount }">
-                        <span class="currency-symbol">$</span>{{ product.price }}
-                      </span>
-                      <span v-if="product.originalPrice" class="original-price">was ${{ product.originalPrice }}</span>
-                      <span v-if="product.discount" class="discount-badge">{{ product.discount }}% off</span>
-                    </div>
-                    <div class="product-stats">
-                      <span class="stat-item"><i class="bi bi-eye"></i> {{ product.views }}</span>
-                      <span class="stat-item"><i class="bi bi-heart"></i> {{ product.likes || '1.2K' }}</span>
-                      <span class="stat-item"><i class="bi bi-star"></i> {{ product.favorites || '854' }}</span>
-                      <span class="stat-item"><i class="bi bi-share"></i> {{ product.shares || '22' }}</span>
-                      <span class="stat-item"><i class="bi bi-cart"></i> {{ product.cart || '12' }}</span>
-                    </div>
-                  </div>
-                  <h6 class="product-title">{{ product.title }}</h6>
-                  <p class="product-desc">{{ product.description }}</p>
-                  <div class="product-meta">
-                    <div class="designer-info">
-                      <img :src="product.avatar" :alt="product.designer.name">
-                      <span>{{ product.designer.name }}</span>
-                    </div>
-                  </div>
-                  <div class="product-buttons">
-                    <button class="btn btn-add-cart">{{ $t('home.addCart') }}</button>
-                    <button class="btn btn-buy-now">
-                      {{ $t('home.buyNow') }}
-                      <i class="bi bi-arrow-right"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
+              </router-link>
 
               <!-- Promotional Banner (only after 4th product) -->
               <div v-if="index === 3" class="promo-banner">
@@ -396,6 +405,9 @@
       </div>
     </div>
 
+    <!-- Floating Action Buttons -->
+    <FloatingActionButtons />
+
     <!-- Footer -->
     <footer class="site-footer">
       <div class="container-fluid px-4 py-4">
@@ -413,6 +425,8 @@ import { ref, inject, onMounted, onBeforeUnmount, computed, getCurrentInstance }
 import { useRouter } from 'vue-router'
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
+import AboutUsDropdown from '@/components/AboutUsDropdown.vue'
+import FloatingActionButtons from '@/components/FloatingActionButtons.vue'
 import type { I18nPlugin } from '@/plugins/i18n'
 import spriteImage from '@/assets/images/sprites/sprite.png'
 import couponImage from '@/assets/images/sprites/coupon.png'
@@ -519,8 +533,41 @@ const filters = ref({
 // Room selection state
 const selectedRoom = ref('all')
 
+// Room navigation items
+const roomNavItems = [
+  { id: 'all', label: 'All' },
+  { id: 'kitchen', label: 'Kitchen' },
+  { id: 'bathroom', label: 'Bathroom' },
+  { id: 'living', label: 'Living Room' },
+  { id: 'bedroom', label: 'Bedroom' },
+  { id: 'dining', label: 'Dining Room' },
+  { id: 'entrance', label: 'Entrance' },
+  { id: 'whole', label: 'Whole House' }
+]
+
 // Product tab selection state
 const selectedTab = ref('all')
+
+// Product tab items
+const productTabs = [
+  { id: 'all', label: 'All Designs' },
+  { id: 'recommended', label: 'Recommended' },
+  { id: 'popular', label: 'Most Popular' },
+  { id: 'bestsellers', label: 'Bestsellers' },
+  { id: 'special', label: 'Special Offer' }
+]
+
+// Color options
+const colorOptions = [
+  '#e8e8e8',
+  '#2c3e50',
+  '#7f8c8d',
+  '#95a5a6',
+  '#a0522d',
+  '#27ae60',
+  '#3498db',
+  '#16a085'
+]
 
 // Carousel button states
 const likedCarousel = ref(false)
@@ -551,126 +598,23 @@ const toggleColor = (color: string) => {
   }
 }
 
-// Product data
-const baseProducts = [
-  {
-    id: 1,
-    title: 'Elegant and romantic minimalist aesthetics',
-    price: 1099,
-    description: 'The modern minimalist style of Nordic style pursues a design concept of simplicity and brightness',
-    image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop&q=80',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer1',
-    views: '9.8K',
-    likes: '1.2K',
-    favorites: '854',
-    shares: '22',
-    cart: '12'
-  },
-  {
-    id: 2,
-    title: 'Elegant and romantic minimalist aesthetics',
-    price: 1300,
-    description: 'The modern minimalist style of Nordic style pursues a design concept of simplicity and brightness',
-    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop&q=80',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer2',
-    views: '856'
-  },
-  {
-    id: 3,
-    title: 'Elegant and romantic minimalist aesthetics',
-    price: 848,
-    description: 'The modern minimalist style of Nordic style pursues a design concept of simplicity and brightness',
-    image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop&q=80',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer3',
-    views: '2.1k'
-  },
-  {
-    id: 4,
-    title: 'Elegant and romantic minimalist aesthetics',
-    price: 1680,
-    originalPrice: 2000,
-    discount: 16,
-    description: 'The modern minimalist style of Nordic style pursues a design concept of simplicity and brightness',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop&q=80',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer4',
-    views: '320',
-    likes: '1.2K',
-    favorites: '320',
-    shares: '320'
-  },
-  {
-    id: 5,
-    title: 'Elegant and romantic minimalist aesthetics',
-    price: 2508,
-    description: 'The modern minimalist style of Nordic style pursues a design concept of simplicity and brightness',
-    image: 'https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?w=800&h=600&fit=crop&q=80',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer5',
-    views: '1.8k'
-  },
-  {
-    id: 6,
-    title: 'Elegant and romantic minimalist aesthetics',
-    price: 405,
-    description: 'The modern minimalist style of Nordic style pursues a design concept of simplicity and brightness',
-    image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&h=600&fit=crop&q=80',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer6',
-    views: '945'
-  },
-  {
-    id: 7,
-    title: 'Modern luxury living space design',
-    price: 1899,
-    description: 'Contemporary design with premium materials and sophisticated aesthetics',
-    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop&q=80',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer7',
-    views: '3.2k',
-    likes: '980',
-    favorites: '654',
-    shares: '45',
-    cart: '18'
-  },
-  {
-    id: 8,
-    title: 'Scandinavian style bedroom suite',
-    price: 2199,
-    originalPrice: 2800,
-    discount: 21,
-    description: 'Clean lines and natural materials create a peaceful retreat',
-    image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=800&h=600&fit=crop&q=80',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer8',
-    views: '4.5k',
-    likes: '1.5K',
-    favorites: '892',
-    shares: '67',
-    cart: '25'
-  },
-  {
-    id: 9,
-    title: 'Industrial chic loft design',
-    price: 1599,
-    description: 'Raw materials and exposed elements for urban living',
-    image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&h=600&fit=crop&q=80',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer9',
-    views: '2.8k',
-    likes: '876',
-    favorites: '543',
-    shares: '34',
-    cart: '15'
-  },
-  {
-    id: 10,
-    title: 'Coastal inspired living room',
-    price: 1750,
-    description: 'Light and airy design with ocean-inspired color palette',
-    image: 'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=800&h=600&fit=crop&q=80',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=designer10',
-    views: '3.6k',
-    likes: '1.1K',
-    favorites: '721',
-    shares: '52',
-    cart: '20'
-  }
-]
+// Add to cart
+const addToCart = (product: any) => {
+  console.log('Add to cart:', product)
+  // TODO: Implement add to cart logic
+}
+
+// Buy now
+const buyNow = (product: any) => {
+  console.log('Buy now:', product)
+  // TODO: Implement buy now logic
+}
+
+// 导入统一的模拟数据
+import { getAllProducts } from '@/data/mockData'
+
+// Product data - 使用统一数据源
+const baseProducts = getAllProducts()
 
 const products = computed(() => 
   baseProducts.map(product => ({
@@ -895,11 +839,11 @@ const products = computed(() =>
 }
 
 .color-box {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 0.25rem; /* 4px */
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
   cursor: pointer;
-  border: 2px solid transparent;
+  border: 1px solid #e5e7eb;
   transition: all 0.2s;
   position: relative;
 }
@@ -911,6 +855,7 @@ const products = computed(() =>
 
 .color-box.active {
   border-color: #00699A;
+  border-width: 2px;
   box-shadow: 0 0 0 0.125rem rgba(0, 105, 154, 0.2); /* 0 0 0 2px */
 }
 
@@ -1299,6 +1244,12 @@ const products = computed(() =>
   min-width: 0; /* 允许网格项收缩 */
 }
 
+.product-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .product-card {
   min-width: 0; /* 允许卡片收缩 */
   background: white;
@@ -1345,24 +1296,24 @@ const products = computed(() =>
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: clamp(6px, 0.8vw, 8px);
 }
 
 .price-section {
   display: flex;
-  align-items: center; /* 水平对齐 */
-  gap: 0.5rem; /* 8px */
+  align-items: center;
+  gap: clamp(6px, 0.8vw, 8px);
 }
 
 .product-price {
   font-family: Inter, sans-serif;
-  font-size: 1.5rem; /* 24px */
+  font-size: clamp(20px, 2.2vw, 24px);
   font-weight: 700;
-  line-height: 1.75rem; /* 28px */
+  line-height: clamp(24px, 2.6vw, 28px);
   letter-spacing: 0;
   color: #333333;
   display: flex;
-  align-items: center; /* Vertical alignment: Middle */
+  align-items: center;
 }
 
 .product-price.has-discount {
@@ -1375,59 +1326,60 @@ const products = computed(() =>
 
 .currency-symbol {
   font-family: Inter, sans-serif;
-  font-size: 1.25rem; /* 20px */
+  font-size: clamp(16px, 1.8vw, 20px);
   font-weight: 700;
-  line-height: 2.5rem; /* 40px */
+  line-height: clamp(32px, 3.5vw, 40px);
   letter-spacing: 0;
-  color: #333333; /* 与数字颜色一致 */
+  color: #333333;
 }
 
 .original-price {
   font-family: Inter, sans-serif;
-  font-size: 1rem; /* 16px */
+  font-size: clamp(14px, 1.4vw, 16px);
   font-weight: 700;
-  line-height: 1.25rem; /* 20px */
+  line-height: clamp(18px, 1.8vw, 20px);
   letter-spacing: 0;
   color: #333333;
   text-decoration: line-through;
 }
 
 .discount-badge {
-  background: #8B2C00;
-  color: #FFFFFF;
-  padding: 0.1875rem 0.5rem; /* 3px 8px */
-  border-radius: 0.25rem; /* 4px */
-  font-family: Arial, sans-serif;
-  font-size: 0.875rem; /* 14px */
-  font-weight: 400;
-  line-height: 1.375rem; /* 22px */
-  letter-spacing: 0;
-  display: inline-flex;
-  align-items: center; /* 垂直居中 */
+  background: #8B2C00 !important;
+  color: #FFFFFF !important;
+  padding: clamp(2px, 0.3vw, 3px) clamp(6px, 0.8vw, 8px) !important;
+  border-radius: clamp(3px, 0.4vw, 4px) !important;
+  font-family: Arial, sans-serif !important;
+  font-size: clamp(12px, 1.2vw, 14px) !important;
+  font-weight: 400 !important;
+  line-height: clamp(18px, 1.8vw, 22px) !important;
+  letter-spacing: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
 }
 
 .product-stats {
   display: flex;
   align-items: center;
-  gap: 1rem; /* 16px */
+  gap: clamp(12px, 1.5vw, 16px);
 }
 
 .stat-item {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem; /* 4px */
+  gap: clamp(3px, 0.4vw, 4px);
   font-family: Inter, sans-serif;
-  font-size: 0.875rem; /* 14px */
+  font-size: clamp(12px, 1.2vw, 14px);
   font-weight: 400;
-  line-height: 1.125rem; /* 18px */
+  line-height: clamp(16px, 1.6vw, 18px);
   letter-spacing: 0;
   color: #5C5C5C;
 }
 
 .stat-item i {
-  font-size: 1.125rem; /* 18px */
-  width: 1.125rem; /* 18px */
-  height: 1.125rem; /* 18px */
+  font-size: clamp(16px, 1.6vw, 18px);
+  width: clamp(16px, 1.6vw, 18px);
+  height: clamp(16px, 1.6vw, 18px);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1435,56 +1387,56 @@ const products = computed(() =>
 
 .product-title {
   font-family: Inter, sans-serif;
-  font-size: 1rem; /* 16px */
+  font-size: clamp(14px, 1.4vw, 16px);
   font-weight: 700;
-  line-height: 1.25rem; /* 20px */
+  line-height: clamp(18px, 1.8vw, 20px);
   letter-spacing: 0;
   color: #333333;
-  margin-bottom: 0.5rem;
+  margin-bottom: clamp(6px, 0.8vw, 8px);
   display: flex;
-  align-items: center; /* Vertical alignment: Middle */
+  align-items: center;
 }
 
 .product-desc {
   font-family: Inter, sans-serif;
-  font-size: 0.875rem; /* 14px */
+  font-size: clamp(12px, 1.2vw, 14px);
   font-weight: 400;
-  line-height: 1.125rem; /* 18px */
+  line-height: clamp(16px, 1.6vw, 18px);
   letter-spacing: 0;
   color: #333333;
-  margin-bottom: 0.75rem;
+  margin-bottom: clamp(10px, 1.2vw, 12px);
   display: flex;
-  align-items: center; /* Vertical alignment: Middle */
+  align-items: center;
 }
 
 .product-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
-  padding-bottom: 0; /* 取消底部内边距 */
-  border-bottom: none; /* 取消分割线 */
+  margin-bottom: clamp(10px, 1.2vw, 12px);
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .designer-info {
   display: flex;
-  align-items: center; /* 水平对齐 */
-  gap: 0.5rem; /* 8px */
+  align-items: center;
+  gap: clamp(6px, 0.8vw, 8px);
 }
 
 .designer-info img {
-  width: 1.5rem; /* 24px */
-  height: 1.5rem; /* 24px */
-  border-radius: 50%; /* 圆形 */
-  object-fit: cover; /* 确保图片填充 */
-  flex-shrink: 0; /* 防止头像被压缩 */
+  width: clamp(20px, 2.2vw, 24px);
+  height: clamp(20px, 2.2vw, 24px);
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .designer-info span {
   font-family: Inter, sans-serif;
-  font-size: 0.875rem; /* 14px */
+  font-size: clamp(12px, 1.2vw, 14px);
   font-weight: 400;
-  line-height: 1.125rem; /* 18px */
+  line-height: clamp(16px, 1.6vw, 18px);
   letter-spacing: 0;
   color: #00699A;
   display: inline-flex;
@@ -1741,5 +1693,171 @@ const products = computed(() =>
   .promo-image {
     width: 100%;
   }
+}
+</style>
+
+
+/* Floating Action Buttons */
+.home-page .floating-actions {
+  position: fixed !important;
+  right: clamp(16px, 1.25vw, 24px) !important;
+  bottom: clamp(60px, 4.17vw, 80px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  gap: clamp(16px, 1.17vw, 22.5px) !important;
+  z-index: 1000 !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.home-page .floating-btn {
+  width: clamp(48px, 3.75vw, 72px) !important;
+  height: clamp(48px, 3.75vw, 72px) !important;
+  min-width: clamp(48px, 3.75vw, 72px) !important;
+  min-height: clamp(48px, 3.75vw, 72px) !important;
+  border-radius: clamp(24px, 2.11vw, 40.5px) !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E5E7EB !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s !important;
+  box-shadow: 0 clamp(1px, 0.1vw, 2px) clamp(4px, 0.42vw, 8px) rgba(0, 0, 0, 0.15) !important;
+  padding: clamp(12px, 0.94vw, 18px) !important;
+  margin: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.home-page .floating-btn i {
+  font-size: clamp(24px, 1.875vw, 36px) !important;
+  color: #00699A !important;
+  transition: color 0.3s !important;
+  width: clamp(24px, 1.875vw, 36px) !important;
+  height: clamp(24px, 1.875vw, 36px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+.home-page .floating-btn .back-to-top-icon {
+  width: clamp(24px, 1.875vw, 36px) !important;
+  height: clamp(24px, 1.875vw, 36px) !important;
+  color: #FFFFFF !important;
+  transition: color 0.3s !important;
+  display: block !important;
+}
+
+.home-page .floating-btn:hover {
+  background: #F5F5F5 !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 clamp(2px, 0.21vw, 4px) clamp(8px, 0.63vw, 12px) rgba(0, 0, 0, 0.2) !important;
+}
+
+.home-page .floating-btn.active i {
+  color: #00699A !important;
+}
+
+.home-page .floating-btn:last-child {
+  background: #333333 !important;
+  border: none !important;
+}
+
+.home-page .floating-btn:last-child i {
+  color: #FFFFFF !important;
+}
+
+.home-page .floating-btn:last-child:hover {
+  background: #000000 !important;
+}
+
+@media (max-width: 768px) {
+  .home-page .floating-actions {
+    right: clamp(12px, 2.08vw, 16px) !important;
+    bottom: clamp(48px, 8.33vw, 64px) !important;
+  }
+  
+  .home-page .floating-btn {
+    width: clamp(40px, 6.25vw, 48px) !important;
+    height: clamp(40px, 6.25vw, 48px) !important;
+    min-width: clamp(40px, 6.25vw, 48px) !important;
+    min-height: clamp(40px, 6.25vw, 48px) !important;
+  }
+  
+  .home-page .floating-btn i {
+    font-size: clamp(16px, 2.34vw, 18px) !important;
+  }
+}
+
+
+<style>
+/* Global Floating Action Buttons - Not Scoped */
+.floating-actions {
+  position: fixed;
+  right: clamp(16px, 1.25vw, 24px);
+  bottom: clamp(60px, 4.17vw, 80px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.17vw, 22.5px);
+  z-index: 9999;
+}
+
+.floating-btn {
+  width: clamp(48px, 3.75vw, 72px);
+  height: clamp(48px, 3.75vw, 72px);
+  border-radius: clamp(24px, 2.11vw, 40.5px);
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 clamp(1px, 0.1vw, 2px) clamp(4px, 0.42vw, 8px) rgba(0, 0, 0, 0.15);
+  padding: clamp(12px, 0.94vw, 18px);
+}
+
+.floating-btn i {
+  font-size: clamp(24px, 1.875vw, 36px);
+  color: #00699A;
+  width: clamp(24px, 1.875vw, 36px);
+  height: clamp(24px, 1.875vw, 36px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.floating-btn .back-to-top-icon {
+  width: clamp(24px, 1.875vw, 36px);
+  height: clamp(24px, 1.875vw, 36px);
+  color: #FFFFFF;
+  transition: color 0.3s;
+  display: block;
+}
+
+.floating-btn:hover {
+  background: #F5F5F5;
+  transform: scale(1.05);
+  box-shadow: 0 clamp(2px, 0.21vw, 4px) clamp(8px, 0.63vw, 12px) rgba(0, 0, 0, 0.2);
+}
+
+.floating-btn.active i {
+  color: #00699A;
+}
+
+.floating-btn:last-child {
+  background: #333333;
+  border: none;
+}
+
+.floating-btn:last-child i {
+  color: #FFFFFF;
+}
+
+.floating-btn:last-child:hover {
+  background: #000000;
 }
 </style>

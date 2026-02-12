@@ -32,7 +32,12 @@ const languages = {
       'nav.guest': '游客',
       'nav.upgradeAccount': '成为正式用户',
 
+      // 面包屑
+      'breadcrumb.cases': '案例展示',
+
       // 关于我们下拉菜单
+      'about.platformName': '平台名称',
+      'about.platformDesc': '打造您的梦想家园',
       'about.company': 'XXX设计',
       'about.description': '致力于创造美好居住体验，提供一站式家居设计解决方案',
       'about.quickLinks': '快速链接',
@@ -45,9 +50,10 @@ const languages = {
       'about.faq': '常见问题',
       'about.feedback': '意见反馈',
       'about.contact': '联系我们',
-      'about.address': '美国硅谷XXXXXX',
+      'about.address': '美国硅谷文本文本文本文本文本文本文本',
       'about.phone': '400-888-8888',
-      'about.email': '123456@mail.com',
+      'about.email': 'dream home@mail.com',
+      'about.emailCopied': '邮箱已复制到剪贴板！',
 
       // 首页
       'home.brand': '🏠 Home Decor',
@@ -233,7 +239,12 @@ const languages = {
       'nav.guest': 'Guest',
       'nav.upgradeAccount': 'Become a Full Member',
 
+      // Breadcrumb
+      'breadcrumb.cases': 'Cases',
+
       // About Us dropdown
+      'about.platformName': 'Platform Name',
+      'about.platformDesc': 'Build Your Dream Home',
       'about.company': 'XXX Design',
       'about.description': 'Committed to creating beautiful living experiences and providing one-stop home design solutions',
       'about.quickLinks': 'Quick Links',
@@ -246,9 +257,10 @@ const languages = {
       'about.faq': 'FAQ',
       'about.feedback': 'Feedback',
       'about.contact': 'Contact Us',
-      'about.address': 'Silicon Valley, USA XXXXXX',
+      'about.address': 'Silicon Valley, USA text text text text text text text',
       'about.phone': '400-888-8888',
-      'about.email': '123456@mail.com',
+      'about.email': 'dream home@mail.com',
+      'about.emailCopied': 'Email copied to clipboard!',
 
       // Home
       'home.brand': '🏠 Home Decor',
@@ -429,7 +441,12 @@ const languages = {
       'nav.login': 'Iniciar Sesión',
       'nav.register': 'Registrarse',
 
+      // Breadcrumb
+      'breadcrumb.cases': 'Casos',
+
       // Menú Acerca de
+      'about.platformName': 'Nombre de la Plataforma',
+      'about.platformDesc': 'Construye Tu Hogar Soñado',
       'about.company': 'XXX Diseño',
       'about.description': 'Comprometidos a crear experiencias de vida hermosas y brindar soluciones integrales de diseño del hogar',
       'about.quickLinks': 'Enlaces Rápidos',
@@ -442,9 +459,10 @@ const languages = {
       'about.faq': 'Preguntas Frecuentes',
       'about.feedback': 'Comentarios',
       'about.contact': 'Contáctanos',
-      'about.address': 'Silicon Valley, EE.UU. XXXXXX',
+      'about.address': 'Silicon Valley, EE.UU. texto texto texto texto texto texto texto',
       'about.phone': '400-888-8888',
-      'about.email': '123456@mail.com',
+      'about.email': 'dream home@mail.com',
+      'about.emailCopied': '¡Correo copiado al portapapeles!',
 
       // Inicio
       'home.brand': '🏠 Home Decor',

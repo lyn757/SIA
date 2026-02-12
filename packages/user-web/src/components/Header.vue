@@ -56,7 +56,7 @@ const $t = (key: string) => i18n?.t(key) || key
 .top-nav-bar {
   background: #333333;
   color: white;
-  padding: 0.5rem 0;
+  padding: clamp(6px, 0.8vw, 8px) 0;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -64,9 +64,9 @@ const $t = (key: string) => i18n?.t(key) || key
   background: #00699A;
   color: white;
   border: none;
-  padding: 0.375rem 1rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
+  padding: clamp(4px, 0.6vw, 6px) clamp(12px, 1.5vw, 16px);
+  border-radius: clamp(2px, 0.3vw, 4px);
+  font-size: clamp(13px, 1.2vw, 14px);
   transition: background 0.2s;
 }
 
@@ -76,13 +76,13 @@ const $t = (key: string) => i18n?.t(key) || key
 
 .main-header {
   background: white;
-  padding: 1rem 0;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+  padding: clamp(12px, 1.5vw, 16px) 0;
+  box-shadow: 0 clamp(1px, 0.15vw, 2px) clamp(2px, 0.3vw, 4px) rgba(0, 0, 0, 0.05);
   margin-bottom: 0;
 }
 
 .navbar-brand {
-  font-size: 1.5rem;
+  font-size: clamp(20px, 2.5vw, 24px);
   font-weight: 700;
   color: #00699A;
   text-decoration: none;
@@ -91,9 +91,10 @@ const $t = (key: string) => i18n?.t(key) || key
 .nav-link {
   color: #6b7280;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  font-size: 0.9375rem;
+  padding: clamp(6px, 0.8vw, 8px) clamp(12px, 1.5vw, 16px);
+  font-size: clamp(14px, 1.3vw, 15px);
   transition: color 0.2s;
+  white-space: nowrap;
 }
 
 .nav-link:hover,
@@ -102,24 +103,28 @@ const $t = (key: string) => i18n?.t(key) || key
 }
 
 .search-input {
-  width: 18.75rem;
-  padding-left: 2.5rem;
+  width: clamp(200px, 25vw, 300px);
+  padding-left: clamp(32px, 4vw, 40px);
+  padding-top: clamp(6px, 0.8vw, 8px);
+  padding-bottom: clamp(6px, 0.8vw, 8px);
+  padding-right: clamp(8px, 1vw, 12px);
   border: 1px solid #e5e7eb;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
+  border-radius: clamp(2px, 0.3vw, 4px);
+  font-size: clamp(13px, 1.2vw, 14px);
 }
 
 .search-icon {
   position: absolute;
-  left: 0.75rem;
+  left: clamp(8px, 1vw, 12px);
   top: 50%;
   transform: translateY(-50%);
   color: #9ca3af;
+  font-size: clamp(14px, 1.5vw, 16px);
 }
 
 .btn-icon {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: clamp(36px, 4vw, 40px);
+  height: clamp(36px, 4vw, 40px);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -128,10 +133,38 @@ const $t = (key: string) => i18n?.t(key) || key
   color: #6b7280;
   text-decoration: none;
   transition: all 0.2s;
+  font-size: clamp(16px, 1.8vw, 18px);
 }
 
 .btn-icon:hover {
   background: #f3f4f6;
   color: #00699A;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .main-header .container-fluid {
+    padding-left: clamp(12px, 3vw, 16px) !important;
+    padding-right: clamp(12px, 3vw, 16px) !important;
+  }
+  
+  .search-input {
+    width: clamp(150px, 35vw, 200px);
+  }
+  
+  .nav-link {
+    padding: clamp(4px, 1vw, 6px) clamp(8px, 2vw, 12px);
+    font-size: clamp(13px, 3vw, 14px);
+  }
+}
+
+@media (max-width: 576px) {
+  .main-header .d-flex.gap-4 {
+    gap: clamp(8px, 2vw, 12px) !important;
+  }
+  
+  .main-header .d-flex.gap-3 {
+    gap: clamp(6px, 1.5vw, 8px) !important;
+  }
 }
 </style>
